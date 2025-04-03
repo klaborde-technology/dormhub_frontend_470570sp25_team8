@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 export default function Home() {
   const users = [
-    { username: 'JohnDoe', email: 'john@example.com', task: 'Clean Bed', deadline: '2025-04-03', status: 'In-Progress' },
-    { username: 'JaneSmith', email: 'jane@example.com', task: 'Clean Toilet', deadline: '2025-04-05', status: 'Completed' },
+    { id: 1, username: 'JohnDoe', email: 'john@example.com', task: 'Clean Bed', deadline: '2025-04-03', status: 'In-Progress' },
+    { id: 2, username: 'JaneSmith', email: 'jane@example.com', task: 'Clean Toilet', deadline: '2025-04-05', status: 'Completed' },
   ];
 
   return (
@@ -65,37 +66,40 @@ export default function Home() {
                         user.status === 'In-Progress'
                           ? 'red'
                           : user.status === 'Completed'
-                            ? 'green'
-                            : 'inherit',
+                          ? 'green'
+                          : 'inherit',
                     }}
                   >
                     {user.status}
                   </span>
-              </td>
-              <td>
-                <button className="btn btn-primary btn-sm" aria-label="View task">&#128065;</button>
-                <button
-                  className="btn btn-sm"
-                  style={{
-                    backgroundColor: 'purple',
-                    borderColor: 'white',
-                  }}
-                  aria-label="Edit task"
-                >
-                  &#9998;
-                </button>
-                <button
-                  className="btn btn-danger btn-sm mx-1"
-                  aria-label="Delete task"
-                >
-                  Delete
-                </button>
-              </td>
+                </td>
+                <td>
+                  {/* Wrap the View task button with Link to navigate */}
+                  <Link to={`/viewtask/${user.id}`} className="btn btn-primary btn-sm" aria-label="View task">
+                    &#128065;
+                  </Link>
+                  <button
+                    className="btn btn-sm"
+                    style={{
+                      backgroundColor: 'purple',
+                      borderColor: 'white',
+                    }}
+                    aria-label="Edit task"
+                  >
+                    &#9998;
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm mx-1"
+                    aria-label="Delete task"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
-    </div >
   );
 }
