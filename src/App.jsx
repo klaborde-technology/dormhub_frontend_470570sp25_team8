@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import AddUser from "./users/AddUser";
 import EditUser from "./users/EditUser";
 import ViewUser from "./users/ViewUser";
+import ViewTask from "./tasks/ViewTask";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import LogoutSuccess from "./auth/LogoutSuccess"; // ✅ Import new logout page
@@ -45,6 +46,7 @@ function App() {
 
           {/* ✅ Public Route (ViewUser should be accessible to all users, including guests) */}
           <Route path="/viewuser/:id" element={<ViewUser />} />
+          <Route path="/viewtask/:id" element={<ViewTask />} />
         </Routes>
       </Router>
     </div>
