@@ -7,6 +7,7 @@ import Navbar from "./layout/Navbar";
 import Home from "./pages/Home";
 import AddUser from "./users/AddUser";
 import EditUser from "./users/EditUser";
+import EditTask from "./tasks/EditTask";
 import ViewUser from "./users/ViewUser";
 import ViewTask from "./tasks/ViewTask";
 import Login from "./auth/Login";
@@ -42,8 +43,9 @@ function App() {
 
           {/* ✅ Protected Routes */}
           <Route path="/adduser" element={<ProtectedRoute element={<AddUser />} requiredRoles={["ADMIN"]} />} />
-          <Route path="/edituser/:id" element={<ProtectedRoute element={<EditUser />} requiredRoles={["ADMIN", "PRIVILEGED_USER"]} />} />
-
+          <Route path="/edituser/:id" element={<ProtectedRoute element={<EditUser />} requiredRoles={["ADMIN"]} />} />
+          <Route path="/edittask/:id" element={<ProtectedRoute element={<EditTask />} requiredRoles={["ADMIN", "PRIVILEGED_USER"]} />} />
+          
           {/* ✅ Public Route (ViewUser should be accessible to all users, including guests) */}
           <Route path="/viewuser/:id" element={<ViewUser />} />
           <Route path="/viewtask/:id" element={<ViewTask />} />

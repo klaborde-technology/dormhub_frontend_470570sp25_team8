@@ -78,16 +78,18 @@ export default function Home() {
                   <Link to={`/viewtask/${user.id}`} className="btn btn-primary btn-sm" aria-label="View task">
                     &#128065;
                   </Link>
-                  <button
+                  <Link
                     className="btn btn-sm"
+                    to={`/edittask/${user.id}`}
                     style={{
-                      backgroundColor: 'purple',
+                      backgroundColor: 'fuchsia',
                       borderColor: 'white',
                     }}
                     aria-label="Edit task"
                   >
-                    &#9998;
-                  </button>
+                    <span className="btn-edit-desktop">Edit</span>
+                    <span className="btn-edit-mobile">&#9998;</span>
+                  </Link>
                   <button
                     className="btn btn-danger btn-sm mx-1"
                     aria-label="Delete task"
