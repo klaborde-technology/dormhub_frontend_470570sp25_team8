@@ -97,7 +97,7 @@ export default function ViewTask() {
                             </ul>
                         </div>
                     </div>
-                    <Link className="btn btn-primary my-2" to={"/"}>Return To Task List</Link>
+                    <Link className="btn btn-primary my-2" to={"/"}>Return</Link>
                 </div>
             </div>
         </div>
