@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 export default function Home() {
+  
   const users = [
     { id: 1, username: 'JohnDoe', email: 'john@example.com', tasks: ['Clean Bed'], deadline: '2025-04-03', status: 'In-Progress' },
     { id: 2, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Toilet', 'Clean Sink'], deadline: '2025-04-05', status: 'Completed' },
     { id: 3, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Bed'], deadline: '2025-05-05', status: 'In-Progress' },
   ];
-
+  
   const [user, setUser] = useState(users);
   const [targetTable, setTargetTable] = useState([]);
 
@@ -45,7 +46,7 @@ export default function Home() {
                   borderColor: 'white',
                 }}
               >
-                Add
+                Add Task
               </button>
               <button
                 className="btn btn-info ml-3"
@@ -161,7 +162,8 @@ export default function Home() {
                   </td>
                   <td>
                     <Link to={`/viewtask/${user.id}`} className="btn btn-primary btn-sm" aria-label="View task">
-                      &#128065;
+                    <span className="btn-view-desktop">View</span>
+                    <span className="btn-view-mobile">&#128065;</span>
                     </Link>
                     <Link
                     className="btn btn-sm"
@@ -179,7 +181,8 @@ export default function Home() {
                       className="btn btn-danger btn-sm mx-1"
                       aria-label="Delete task"
                     >
-                      Delete
+                      <span className="btn-delete-desktop">Delete</span>
+                      <span className="btn-delete-mobile">&#128465;</span>
                     </button>
                   </td>
                 </tr>
@@ -239,7 +242,8 @@ export default function Home() {
                   </td>
                   <td>
                     <Link to={`/viewtask/${user.id}`} className="btn btn-primary btn-sm" aria-label="View task">
-                      &#128065;
+                    <span className="btn-view-desktop">View</span>
+                    <span className="btn-view-mobile">&#128065;</span>
                     </Link>
                     <Link
                     className="btn btn-sm"
@@ -257,7 +261,8 @@ export default function Home() {
                       className="btn btn-danger btn-sm mx-1"
                       aria-label="Delete task"
                     >
-                      Delete
+                      <span className="btn-delete-desktop">Delete</span>
+                      <span className="btn-delete-mobile">&#128465;</span>
                     </button>
                   </td>
                 </tr>

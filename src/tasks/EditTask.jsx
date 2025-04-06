@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 
 export default function EditTask() {
+    const { id } = useParams();
+
     const [task, setTask] = useState({
         username: "",
         email: "",
@@ -11,10 +13,9 @@ export default function EditTask() {
         status: "",
 
     });
-
+    
+    
     const { username, email, task: taskName, deadline, status } = task;
-
-    const { id } = useParams();
 
     const onInputChange = (e) => {
         setTask({ ...task, [e.target.name]: e.target.value });
@@ -24,7 +25,6 @@ export default function EditTask() {
         loadTask();
     }, []);
 
-    /*
     const loadTask = async () => {
         try {
             const result = await axios.get(`http://localhost:8080/api/task/${id}`);
@@ -33,7 +33,7 @@ export default function EditTask() {
             console.error("Error fetching task:", error);
         }
     };
-    */
+
 
     return (
         <div className="custom-container">

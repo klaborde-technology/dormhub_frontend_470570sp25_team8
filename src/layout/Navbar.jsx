@@ -38,10 +38,10 @@ export default function Navbar() {
               </li>
             )}
 
-            {/* ✅ Show Add User button ONLY for ADMIN users */}
+            {/* ✅ Show Add Task & User button ONLY for ADMIN users */}
             {isAuthenticated && userRole === "ADMIN" && (
               <li className="nav-item">
-                <Link className="btn btn-outline-light me-2" to="/adduser">Add Task</Link>
+                <Link className="btn btn-outline-light me-2" to="/addtask">Add Task</Link>
               </li>
             )}
 
