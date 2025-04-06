@@ -1,53 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
-// import { API_BASE_URL } from '../api';
 
-export default function ViewTask() {
-
-    const users = [
-        { id: 1, username: 'JohnDoe', email: 'john@example.com', task: 'Clean Bed', deadline: '2025-04-03', status: 'In-Progress' },
-        { id: 2, username: 'JaneSmith', email: 'jane@example.com', task: 'Clean Toilet', deadline: '2025-04-05', status: 'Completed' },
-      ];
+export default function ViewTask() { 
 
     const [task, setTask] = useState(null); // Initialize task as null
 
     const { id } = useParams();
-    
-    /*
-    const [task, setTask] = useState({
-        name: "",
-        deadline: "",
-        status: "",
-        user: {}
-    });
-    */
-    
+
     useEffect(() => {
-        // Find the task based on the `id` from the URL
-        const foundTask = users.find(user => user.id === parseInt(id));
-        if (foundTask) {
-          setTask(foundTask); // Set the task data into the state
-        } else {
-          console.log("Task not found!");
-        }
-    }, [id]);
+        // Fetch task based on ID
+        const fetchTask = async () => {
+          try {
+            const result = await axios.get(`http://localhost:8080/api/task/${id}`); // Replace with actual endpoint
+            setTask(result.data); // Store fetched task data
+          } catch (error) {
+            console.error('Error fetching task:', error);
+          }
+        };
+        fetchTask();
+      }, [id]);
 
     if (!task) {
         return <div>Task not found!</div>;
     }
-
-    /*
-    const loadTask = async () => {
-        try {
-            const result = await axios.get(`${API_BASE_URL}/task/${id}`);
-            setTask(result.data);
-        } catch (error) {
-            console.error("Error fetching task:", error);
-        }
-        
-    }
-    */
+    
     
     const getStatusStyle = (status) => {
         if (status == "Completed") {

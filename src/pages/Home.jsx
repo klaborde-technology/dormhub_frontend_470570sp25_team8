@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 export default function Home() {
@@ -11,6 +11,19 @@ export default function Home() {
   
   const [user, setUser] = useState(users);
   const [targetTable, setTargetTable] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/users/'); // Adjust the URL as needed
+        setUsers(await response.json());
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
 
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
