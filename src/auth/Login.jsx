@@ -1,43 +1,50 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AuthService from "./AuthService";
+import AuthService from "../auth/AuthService";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
-    const [loading, setLoading] = useState(false); // ✅ Tracks login state
-    const navigate = useNavigate(); // ✅ Enables redirection
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setMessage(""); // ✅ Clear previous messages
-        setLoading(true); // ✅ Show loading state
+        setMessage("");
+        setLoading(true);
 
         try {
             const response = await axios.post("http://localhost:8080/auth/login", {
                 email,
                 password,
             });
+            const token = response.data; // Your API returns only the raw token
 
-            const token = response.data; // ✅ Your API returns only the raw token
-
-            // ✅ Ensure token looks valid (JWT format)
+            // Ensure token looks valid (JWT format)
             if (!token || token.split(".").length !== 3) {
                 console.error("Invalid token received:", token);
                 throw new Error("Invalid token format");
             }
 
-            AuthService.login(token); // ✅ Store token properly
+            AuthService.login(token); // Store token properly
 
             setMessage("✅ Login successful! Redirecting...");
-            setTimeout(() => navigate("/"), 1500); // ✅ Redirect after 1.5 sec
+
+            // After a delay, check the user's role and redirect accordingly.
+            setTimeout(() => {
+                if (AuthService.getUserRole() === "ADMIN") {
+                    navigate("/admintasks", { replace: true });
+                } else {
+                    navigate("/", { replace: true });
+                }
+            }, 1500);
         } catch (error) {
             console.error("Login error:", error);
             setMessage("❌ Login failed. Check your credentials.");
         } finally {
-            setLoading(false); // ✅ Reset loading state
+            setLoading(false);
         }
     };
 
@@ -60,7 +67,7 @@ function Login() {
                     required
                 />
                 <button type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"} {/* ✅ Show loading text */}
+                    {loading ? "Logging in..." : "Login"}
                 </button>
             </form>
             <p>{message}</p>
