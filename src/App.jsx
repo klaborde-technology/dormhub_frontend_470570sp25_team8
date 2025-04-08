@@ -18,6 +18,7 @@ import AdminUserTasks from "./pages/AdminUserTasks"; // Make sure this is in you
 import AddUserTask from "./tasks/AddUserTask"; // Your form to add tasks as a user task
 import EditUserTask from "./tasks/EditUserTask";
 import ViewUserTask from "./tasks/ViewUserTask";
+import PrivilegeUserTasks from "./pages/PrivilegeUserTasks"; // Your form to add tasks as a user task
 
 const ProtectedRoute = ({ element, requiredRoles }) => {
   const isAuthenticated = AuthService.isAuthenticated();
@@ -31,7 +32,7 @@ const ProtectedRoute = ({ element, requiredRoles }) => {
     return <Navigate to="/" replace />;
   }
 
-  return element;
+  return <>{element}</>;
 };
 
 function App() {
@@ -73,6 +74,10 @@ function App() {
           {/* Public routes */}
           <Route path="/viewuser/:id" element={<ViewUser />} />
           <Route path="/viewtask/:id" element={<ViewTask />} />
+
+
+          {/* Privileged Users: Incorporate a route to req  ADJUST to PrivilegedUser Later */}
+          <Route path="/privilegeusertasks" element={<PrivilegeUserTasks />} />
 
           {/* Admin Task Dashboard */}
           <Route
