@@ -4,30 +4,10 @@ import { Link } from "react-router-dom";
 import AuthService from "../auth/AuthService";
 
 const PrivilegeUserTasks = () => {
-
-    const users = [
-        { id: 1, tasks: ['Clean Bed'], deadline: '2025-04-03'},
-        { id: 2, tasks: ['Clean Toilet', 'Clean Sink'], deadline: '2025-04-05'},
-        { id: 3, tasks: ['Clean Bed'], deadline: '2025-05-05'}
-      ];
-  
-      
     const [inProgressTasks, setInProgressTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
 
-    // Function to fetch tasks from the backend
-    const mapSampleTasksToState = () => {
-        const inProgress = users.map(user => ({
-            id: user.id,
-            task: { name: user.tasks.join(", ") },
-            deadline: user.deadline,
-        }));
-        setInProgressTasks(inProgress);
-    };
-
-    useEffect(() => {
-        mapSampleTasksToState();
-    }, []);
+    // Fetch tasks from the backend
     const fetchTasks = async () => {
         try {
             const inProgressResponse = await axios.get(
@@ -80,7 +60,6 @@ const PrivilegeUserTasks = () => {
     const renderTable = (tasks, isCompleted) => (
         <table className="table table-bordered">
             <thead className="thead-light">
-                
                 <tr>
                     <th>Task No.</th>
                     <th>Task Name</th>
