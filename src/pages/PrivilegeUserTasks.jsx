@@ -25,15 +25,18 @@ const PrivilegeUserTasks = () => {
         }
     };
 
-    // Toggle task completion status
-    const toggleTaskStatus = async (id, currentStatus) => {
+    // Toggle task completion status while preserving deadline
+    const toggleTaskStatus = async (id, currentStatus, currentDeadline) => {
         try {
             await axios.put(
                 `http://localhost:8080/usertask/${id}`,
-                { status: !currentStatus },
+                { 
+                    status: !currentStatus, 
+                    deadline: currentDeadline // Keep the deadline unchanged
+                },
                 { headers: AuthService.getAuthHeader() }
             );
-            fetchTasks();
+            fetchTasks(); // Refresh task lists dynamically
         } catch (error) {
             console.error("Error updating task status:", error);
         }
@@ -56,8 +59,8 @@ const PrivilegeUserTasks = () => {
         fetchTasks();
     }, []);
 
-    // Render a table for tasks, including a placeholder row when no tasks are found
-    const renderTable = (tasks, isCompleted) => (
+    // Render table for tasks
+    const renderTable = (tasksToRender) => (
         <table className="table table-bordered">
             <thead className="thead-light">
                 <tr>
@@ -69,26 +72,34 @@ const PrivilegeUserTasks = () => {
                 </tr>
             </thead>
             <tbody>
-                {tasks.length > 0 ? (
-                    tasks.map((ut) => (
-                        <tr key={ut.id}>
-                            <td>{ut.id}</td>
-                            <td>{ut.task.name}</td>
-                            <td>{ut.deadline}</td>
+                {tasksToRender.length > 0 ? (
+                    tasksToRender.map((task) => (
+                        <tr key={task.id}>
+                            <td>{task.id}</td>
+                            <td>{task.task.name}</td>
+                            <td>{task.deadline}</td>
                             <td>
                                 <input
                                     type="checkbox"
-                                    checked={isCompleted}
-                                    onChange={() => toggleTaskStatus(ut.id, isCompleted)}
+                                    checked={task.status} // Checkbox reflects task status
+                                    onChange={() => 
+                                        toggleTaskStatus(task.id, task.status, task.deadline) // Pass deadline here
+                                    }
                                 />
                             </td>
                             <td>
                                 <Link
-                                    to={`/viewusertask/${ut.id}`}
+                                    to={`/viewusertask/${task.id}`}
                                     className="btn btn-info btn-sm me-1"
                                 >
                                     View
                                 </Link>
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    onClick={() => deleteTask(task.id)}
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     ))
@@ -108,13 +119,13 @@ const PrivilegeUserTasks = () => {
             {/* In-progress Tasks Table */}
             <div className="mb-5">
                 <h2>Task List</h2>
-                {renderTable(inProgressTasks, false)}
+                {renderTable(inProgressTasks)}
             </div>
 
             {/* Completed Tasks Table */}
             <div>
                 <h2>Completed Task List</h2>
-                {renderTable(completedTasks, true)}
+                {renderTable(completedTasks)}
             </div>
         </div>
     );
