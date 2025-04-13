@@ -127,7 +127,7 @@ export default function AddUserTask() {
                             </select>
                         </div>
                         <button type="submit" className="btn btn-outline-primary">Submit</button>
-                        <Link className="btn btn-outline-danger mx-2" to="/usertasks">Cancel</Link>
+                        <Link className="btn btn-outline-danger mx-2" to="/admintasks">Cancel</Link>
                     </form>
                 </div>
             </div>
