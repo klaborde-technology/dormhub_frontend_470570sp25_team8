@@ -13,9 +13,21 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: "#6a1b9a" }}>
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/">Dormhub</Link>
+        <Link className="navbar-brand d-flex align-items-center text-light" to="/">
+          <img 
+            src="/images/home.png" 
+            alt="Home" 
+            style={{ 
+              width: "30px", 
+              height: "30px", 
+              marginRight: "10px", 
+              filter: "brightness(0) invert(1)" 
+            }} 
+          />
+          Dormhub
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -28,7 +40,7 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto text-light">
             {/* For admin, show only the Add Tasks button */}
             {isAuthenticated && userRole === "ADMIN" && (
               <li className="nav-item">
