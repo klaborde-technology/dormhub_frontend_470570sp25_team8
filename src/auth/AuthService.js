@@ -81,6 +81,38 @@ const AuthService = {
         const token = localStorage.getItem("token");
         return token && token.split(".").length === 3 ? { Authorization: `Bearer ${token}` } : {};
     },
+
+    getCurrentUser: () => {
+        const token = localStorage.getItem("token");
+        if (!token || token.split(".").length !== 3) return null;
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            return {
+                email: payload.sub, // or `payload.email` depending on your backend
+                username: payload.username || payload.sub, // adjust based on your token
+            };
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return null;
+        }
+    },
+
+    // ✅ Get username (usually email) from token
+    getUsername: () => {
+        const token = localStorage.getItem("token");
+        if (!token || token.split(".").length !== 3) return null;
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            return payload.sub || payload.email || null; // Adjust if your token uses a different field
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return null;
+        }
+    },
+
+
 };
 
 export default AuthService;
