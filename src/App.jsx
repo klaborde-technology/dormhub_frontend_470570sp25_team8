@@ -25,8 +25,9 @@ import AddUserTask from "./tasks/AddUserTask";
 import EditUserTask from "./tasks/EditUserTask";
 import ViewUserTask from "./tasks/ViewUserTask";
 import PrivilegeUserTasks from "./pages/PrivilegeUserTasks";
+import ViewSampleUserTask from "./tasks/ViewSampleUserTask";
 
-// Protected route component
+
 const ProtectedRoute = ({ element, requiredRoles }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const userRole = AuthService.getUserRole();
@@ -42,7 +43,6 @@ const ProtectedRoute = ({ element, requiredRoles }) => {
   return <>{element}</>;
 };
 
-// Wrap App with Router (so we can use useLocation in App)
 function AppWrapper() {
   return (
     <Router>
@@ -123,6 +123,7 @@ function App() {
         {/* Public routes */}
         <Route path="/viewuser/:id" element={<ViewUser />} />
         <Route path="/viewtask/:id" element={<ViewTask />} />
+        <Route path="/viewsampletask/sampleuser/:id" element={<ViewSampleUserTask />} />
       </Routes>
     </div>
   );
