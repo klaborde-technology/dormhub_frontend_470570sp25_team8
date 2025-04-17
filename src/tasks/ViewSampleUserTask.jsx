@@ -1,9 +1,10 @@
 import React from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 export default function ViewSampleUserTask() {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const numericId = parseInt(id, 10);
 
   // Try to get user from navigation state
@@ -24,13 +25,19 @@ export default function ViewSampleUserTask() {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{ paddingTop: '40px' }}>
       <h2>Sample Task Details</h2>
       <p><strong>Username:</strong> {user.username}</p>
       <p><strong>Email:</strong> {user.email}</p>
       <p><strong>Tasks:</strong> {user.tasks.join(', ')}</p>
       <p><strong>Deadline:</strong> {user.deadline}</p>
       <p><strong>Status:</strong> {user.status}</p>
+      <button
+      classname="btn btn-primary my-2"
+      onClick={() => navigate("/")}
+      >
+        Back To Dashboard
+      </button>
     </div>
   );
 }
