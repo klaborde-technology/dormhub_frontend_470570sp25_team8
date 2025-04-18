@@ -29,14 +29,26 @@ const AdminUserTasks = () => {
             setTasks(combinedTasks);
             setInProgressTasks(inProgressResponse.data);
             setCompletedTasks(completedResponse.data);
-            setUsers([...new Set(combinedTasks.map((task) => task.user.username))]);
+            //setUsers([...new Set(combinedTasks.map((task) => task.user.username))]);
         } catch (error) {
             console.error("Error fetching tasks:", error);
         }
     };
 
+    const fetchPrivilegedUsers = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/users", {
+                headers: AuthService.getAuthHeader()
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.error("Error fetching privileged users:", error);
+        }
+    };    
+
     useEffect(() => {
         fetchTasks();
+        fetchPrivilegedUsers(); 
     }, []);
 
     useEffect(() => {
@@ -47,7 +59,7 @@ const AdminUserTasks = () => {
     
         setFilteredDeadlines([...new Set(filteredTasks.map((task) => task.deadline))]);
         setFilteredTaskNames([...new Set(filteredTasks.map((task) => task.task.name))]);
-        setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
+        //setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
     }, [selectedUser, selectedDeadline, selectedTaskName, tasks]);
 
     const filterTasks = (tasksToFilter) => {
@@ -101,7 +113,9 @@ const AdminUserTasks = () => {
                 <select className="form-select" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
                     <option value="">-- All Users --</option>
                     {users.map((user) => (
-                        <option key={user} value={user}>{user}</option>
+                        <option key={user.username} value={user.username}>
+                            {user.name} ({user.username})
+                        </option>
                     ))}
                 </select>
             </div>

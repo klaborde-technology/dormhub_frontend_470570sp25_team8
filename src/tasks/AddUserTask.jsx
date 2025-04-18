@@ -79,9 +79,10 @@ export default function AddUserTask() {
                                 required
                             >
                                 <option value="">Choose a User</option>
+
                                 {users.map((user) => (
                                     <option key={user.id} value={user.id}>
-                                        {user.username}
+                                        {user.name} ({user.username})
                                     </option>
                                 ))}
                             </select>
