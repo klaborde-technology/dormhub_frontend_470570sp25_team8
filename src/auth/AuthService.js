@@ -4,12 +4,12 @@ const API_URL = "http://localhost:8080/auth"; // Backend auth API
 
 const AuthService = {
     // ✅ Register a new user
-    register: async (email, password, role) => {
+    register: async (name, username, email, role, password) => {
         try {
-            const response = await axios.post(`${API_URL}/register`, { email, password, role });
+            const response = await axios.post(`${API_URL}/register`, { name, username, email, role, password });
             return response.data;
         } catch (error) {
-            console.error("Registration error:", error.response?.data || error.message);
+            console.error("Registration error:", error.response?.data?.message || error.response?.data || error.message);
             throw error;
         }
     },

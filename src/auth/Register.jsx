@@ -6,10 +6,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [username, setUsername] = useState(""); // Added state for username
+    const [name, setName] = useState(""); // Added state for name
     const [role, setRole] = useState("PRIVILEGED_USER");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -17,12 +24,21 @@ function Register() {
         setLoading(true);
 
         try {
-            await AuthService.register(email, password, role);
-            setMessage("✅ Registration successful! Redirecting to login...");
-            setTimeout(() => navigate("/login"), 1500);
+            const response = await AuthService.register(name, username, email, role, password);
+
+            if (response) {
+                setMessage("✅ Registration successful! Redirecting to login...");
+                setTimeout(() => navigate("/login"), 1500);
+            } else {
+                setMessage("❌ Registration failed. No response from server.");
+            }
         } catch (error) {
             console.error("Registration failed:", error);
-            setMessage("❌ Registration failed. Email may already be in use.");
+
+            // Extract backend error message properly
+            const errorMessage = error.response?.data?.message || error.response?.data || "❌ Registration failed: Unknown error.";
+
+            setMessage(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -73,16 +89,55 @@ function Register() {
                     </div>
 
                     <div className="mb-3">
+                        <label htmlFor="username" className="form-label fw-semibold">
+                            Username
+                        </label>
+                        <input
+                            type="text"
+                            id="username"
+                            className="form-control rounded-3"
+                            placeholder="Enter your username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-3 position-relative">
                         <label htmlFor="password" className="form-label fw-semibold">
                             Password
                         </label>
+                        <div className="input-group">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                className="form-control rounded-3"
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {showPassword ? "👁️" : "🙈"}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label fw-semibold">
+                            Name
+                        </label>
                         <input
-                            type="password"
-                            id="password"
+                            type="text"
+                            id="name"
                             className="form-control rounded-3"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter your full name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                         />
                     </div>
