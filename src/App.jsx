@@ -31,6 +31,8 @@ import ViewSampleUserTask from "./tasks/ViewSampleUserTask";
 const ProtectedRoute = ({ element, requiredRoles }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const userRole = AuthService.getUserRole();
+  const userId = AuthService.getUserId();
+  
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -67,7 +69,7 @@ function App() {
               AuthService.getUserRole() === "ADMIN" ? (
                 <Navigate to="/admintasks" replace />
               ) : AuthService.getUserRole() === "PRIVILEGED_USER" ? (
-                <Navigate to="/privilegeusertasks" replace />
+                <Navigate to={`/usertasks/user/${AuthService.getUserId()}`} replace />
               ) : (
                 <Home />
               )
@@ -96,7 +98,7 @@ function App() {
 
         {/* Privileged User routes */}
         <Route
-          path="/privilegeusertasks"
+          path="/usertasks/user/:id"
           element={<ProtectedRoute element={<PrivilegeUserTasks />} requiredRoles={["PRIVILEGED_USER"]} />}
         />
 

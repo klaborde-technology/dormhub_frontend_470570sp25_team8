@@ -10,12 +10,14 @@ const PrivilegeUserTasks = () => {
     // Fetch tasks from the backend
     const fetchTasks = async () => {
         try {
+            const userId = AuthService.getUserId(); // Get the user ID from AuthService
+            console.log("User ID:", userId);
             const inProgressResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=false",
+                `http://localhost:8080/usertasks/user/${userId}?status=false`,
                 { headers: AuthService.getAuthHeader() }
             );
             const completedResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=true",
+                `http://localhost:8080/usertasks/user/${userId}?status=true`,
                 { headers: AuthService.getAuthHeader() }
             );
             setInProgressTasks(inProgressResponse.data);
