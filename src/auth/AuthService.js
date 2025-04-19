@@ -66,6 +66,21 @@ const AuthService = {
         }
     },
 
+    // ✅ Get user ID from token
+    getUserId: () => {
+        const token = localStorage.getItem("token");
+        if (!token || token.split(".").length !== 3) return null;
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            console.log("Decoded JWT payload:", payload);
+            return payload.id || null; // Adjust based on your token structure
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return null;
+        }
+    },
+
     // ✅ Retrieve token for debugging purposes (Optional)
     getToken: () => {
         return localStorage.getItem("token");
