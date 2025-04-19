@@ -12,9 +12,9 @@ export default function ViewSampleUserTask() {
 
   // Static fallback data
   const sampleUsers = [
-    { id: 1, username: 'JohnDoe', email: 'john@example.com', tasks: ['Clean Bed'], deadline: '2025-04-03', status: 'In-Progress' },
-    { id: 2, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Toilet', 'Clean Sink'], deadline: '2025-04-05', status: 'Completed' },
-    { id: 3, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Bed'], deadline: '2025-05-05', status: 'In-Progress' },
+    { id: 1, username: 'JohnDoe', email: 'john@example.com', tasks: ['Schedule Move-Out Appointment'], deadline: '2025-04-03', status: 'In-Progress' },
+    { id: 2, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Bathroom'], deadline: '2025-04-05', status: 'Completed' },
+    { id: 3, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Kitchen Area'], deadline: '2025-05-05', status: 'In-Progress' },
   ];
 
   // Use state if available, otherwise fallback to static data
@@ -36,7 +36,7 @@ export default function ViewSampleUserTask() {
       classname="btn btn-primary my-2"
       onClick={() => navigate("/")}
       >
-        Back To Dashboard
+        Return To Dashboard
       </button>
     </div>
   );

@@ -34,15 +34,16 @@ function Login() {
 
             setTimeout(() => {
                 const role = AuthService.getUserRole();
+                const userId = AuthService.getUserId();
 
                 if (role === "ADMIN") {
                     navigate("/admintasks", { replace: true });
                 } else if (role === "PRIVILEGED_USER") {
-                    navigate("/privilegeusertasks", { replace: true });
+                    navigate(`/usertasks/user/${userId}`, { replace: true });
                 } else {
                     navigate("/", { replace: true });
                 }
-            }, 1500);
+            }, 500);
         } catch (error) {
             console.error("Login error:", error);
             setMessage("❌ Login failed. Check your credentials.");

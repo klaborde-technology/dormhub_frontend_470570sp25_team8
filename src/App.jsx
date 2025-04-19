@@ -42,6 +42,11 @@ const ProtectedRoute = ({ element, requiredRoles }) => {
     return <Navigate to="/unauthorized" replace />;
   }
 
+  if (!userId) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+  <Navigate to={`/usertasks/user/${userId}`} replace />;
+
   return <>{element}</>;
 };
 

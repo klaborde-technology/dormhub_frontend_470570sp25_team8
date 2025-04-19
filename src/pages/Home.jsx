@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   const sampleUsers = [
-    { id: 1, username: 'JohnDoe', email: 'john@example.com', tasks: ['Clean Bed'], deadline: '2025-04-03', status: 'In-Progress' },
-    { id: 2, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Toilet', 'Clean Sink'], deadline: '2025-04-05', status: 'Completed' },
-    { id: 3, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Bed'], deadline: '2025-05-05', status: 'In-Progress' },
+    { id: 1, username: 'JohnDoe', email: 'john@example.com', tasks: ['Schedule Move-Out Appointment'], deadline: '2025-04-03', status: 'In-Progress' },
+    { id: 2, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Bathroom'], deadline: '2025-04-05', status: 'Completed' },
+    { id: 3, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Kitchen Area'], deadline: '2025-05-05', status: 'In-Progress' },
   ];
 
   const [user, setUser] = useState(sampleUsers);
