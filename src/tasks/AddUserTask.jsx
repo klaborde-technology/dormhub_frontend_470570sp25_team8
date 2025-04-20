@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService"; // ✅ Import AuthService
+import { API_BASE_URL } from '../api';
 
 export default function AddUserTask() {
     const navigate = useNavigate();
@@ -22,12 +23,12 @@ export default function AddUserTask() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const usersResponse = await axios.get("http://localhost:8080/users", {
+                const usersResponse = await axios.get(`${API_BASE_URL}/users`, {
                     headers: AuthService.getAuthHeader(),
                 });
                 setUsers(usersResponse.data);
 
-                const tasksResponse = await axios.get("http://localhost:8080/tasks", {
+                const tasksResponse = await axios.get(`${API_BASE_URL}/tasks`, {
                     headers: AuthService.getAuthHeader(),
                 });
                 setTasks(tasksResponse.data);
@@ -54,7 +55,7 @@ export default function AddUserTask() {
                 task: { id: taskId }, // Send task ID
             };
 
-            await axios.post("http://localhost:8080/usertask", taskData, {
+            await axios.post(`${API_BASE_URL}/usertask`, taskData, {
                 headers: AuthService.getAuthHeader(), // Include JWT token
             });
             navigate("/admintasks"); // Redirect to user-tasks list

@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
+
 
 const PrivilegeUserTasks = () => {
     const [inProgressTasks, setInProgressTasks] = useState([]);
@@ -17,11 +19,11 @@ const PrivilegeUserTasks = () => {
             const userId = AuthService.getUserId(); // Get the user ID from AuthService
             console.log("User ID:", userId);
             const inProgressResponse = await axios.get(
-                `http://localhost:8080/usertasks/user/${userId}?status=false`,
+                `${API_BASE_URL}/usertasks/user/${userId}?status=false`,
                 { headers: AuthService.getAuthHeader() }
             );
             const completedResponse = await axios.get(
-                `http://localhost:8080/usertasks/user/${userId}?status=true`,
+                `${API_BASE_URL}/usertasks/user/${userId}?status=true`,
                 { headers: AuthService.getAuthHeader() }
             );
             setInProgressTasks(inProgressResponse.data);
@@ -35,7 +37,7 @@ const PrivilegeUserTasks = () => {
     const toggleTaskStatus = async (id, currentStatus, currentDeadline) => {
         try {
             await axios.put(
-                `http://localhost:8080/usertask/${id}`,
+                `${API_BASE_URL}/usertask/${id}`,
                 { 
                     status: !currentStatus, 
                     deadline: currentDeadline // Keep the deadline unchanged
@@ -51,7 +53,7 @@ const PrivilegeUserTasks = () => {
     // Delete a task by id and refresh the list
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/usertask/${id}`, {
+            await axios.delete(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
             fetchTasks();

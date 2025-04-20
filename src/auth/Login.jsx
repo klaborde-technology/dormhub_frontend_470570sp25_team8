@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { API_BASE_URL } from '../api';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ function Login() {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://localhost:8080/auth/login", {
+            const response = await axios.post(`${API_BASE_URL}/auth/login`, {
                 email,
                 password,
             });

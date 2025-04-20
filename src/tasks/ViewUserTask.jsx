@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
 
 export default function ViewUserTask() {
     const [userTask, setUserTask] = useState({
@@ -21,7 +22,7 @@ export default function ViewUserTask() {
 
     const loadUserTask = async () => {
         try {
-            const result = await axios.get(`http://localhost:8080/usertask/${id}`, {
+            const result = await axios.get(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
             console.log("Loaded user task:", result.data);

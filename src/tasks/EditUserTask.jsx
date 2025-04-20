@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
 
 export default function EditUserTask() {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function EditUserTask() {
 
     const loadTask = async () => {
         try {
-            const result = await axios.get(`http://localhost:8080/usertask/${id}`, {
+            const result = await axios.get(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
             // Assuming result.data contains fields: deadline and status
@@ -44,7 +45,7 @@ export default function EditUserTask() {
                 deadline: task.deadline,
                 status: task.status === "true", // convert back to boolean
             };
-            await axios.put(`http://localhost:8080/usertask/${id}`, payload, {
+            await axios.put(`${API_BASE_URL}/usertask/${id}`, payload, {
                 headers: AuthService.getAuthHeader(),
             });
             navigate("/admintasks"); // Return to the dashboard after update
