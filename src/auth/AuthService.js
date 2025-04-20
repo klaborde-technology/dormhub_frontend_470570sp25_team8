@@ -1,12 +1,13 @@
 import axios from "axios";
+import { API_BASE_URL } from '../api';
 
-const API_URL = "http://localhost:8080/auth"; // Backend auth API
+const API_URL = `${ API_BASE_URL }/auth`; // Backend auth API
 
 const AuthService = {
     // ✅ Register a new user
     register: async (name, username, email, role, password) => {
         try {
-            const response = await axios.post(`${API_URL}/register`, { name, username, email, role, password });
+            const response = await axios.post(`${ API_BASE_URL }/auth/register`, { name, username, email, role, password });
             return response.data;
         } catch (error) {
             console.error("Registration error:", error.response?.data?.message || error.response?.data || error.message);

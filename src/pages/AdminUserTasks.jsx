@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
 
 const AdminUserTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -18,11 +19,11 @@ const AdminUserTasks = () => {
     const fetchTasks = async () => {
         try {
             const inProgressResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=false",
+                `${API_BASE_URL}/usertasks?status=false`,
                 { headers: AuthService.getAuthHeader() }
             );
             const completedResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=true",
+                `${API_BASE_URL}/usertasks?status=true`,
                 { headers: AuthService.getAuthHeader() }
             );
             const combinedTasks = [...inProgressResponse.data, ...completedResponse.data];
@@ -37,7 +38,7 @@ const AdminUserTasks = () => {
 
     const fetchPrivilegedUsers = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/users", {
+            const response = await axios.get(`${API_BASE_URL}/users`, {
                 headers: AuthService.getAuthHeader()
             });
             setUsers(response.data);
@@ -98,7 +99,7 @@ const AdminUserTasks = () => {
 
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/usertask/${id}`, { headers: AuthService.getAuthHeader() });
+            await axios.delete(`${API_BASE_URL}/usertask/${id}`, { headers: AuthService.getAuthHeader() });
             fetchTasks();
         } catch (error) {
             console.error("Error deleting task:", error);
