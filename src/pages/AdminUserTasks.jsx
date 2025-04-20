@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
 
 const AdminUserTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -18,25 +19,37 @@ const AdminUserTasks = () => {
     const fetchTasks = async () => {
         try {
             const inProgressResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=false",
+                `${API_BASE_URL}/usertasks?status=false`,
                 { headers: AuthService.getAuthHeader() }
             );
             const completedResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=true",
+                `${API_BASE_URL}/usertasks?status=true`,
                 { headers: AuthService.getAuthHeader() }
             );
             const combinedTasks = [...inProgressResponse.data, ...completedResponse.data];
             setTasks(combinedTasks);
             setInProgressTasks(inProgressResponse.data);
             setCompletedTasks(completedResponse.data);
-            setUsers([...new Set(combinedTasks.map((task) => task.user.username))]);
+            //setUsers([...new Set(combinedTasks.map((task) => task.user.username))]);
         } catch (error) {
             console.error("Error fetching tasks:", error);
         }
     };
 
+    const fetchPrivilegedUsers = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/users`, {
+                headers: AuthService.getAuthHeader()
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.error("Error fetching privileged users:", error);
+        }
+    };    
+
     useEffect(() => {
         fetchTasks();
+        fetchPrivilegedUsers(); 
     }, []);
 
     useEffect(() => {
@@ -47,7 +60,7 @@ const AdminUserTasks = () => {
     
         setFilteredDeadlines([...new Set(filteredTasks.map((task) => task.deadline))]);
         setFilteredTaskNames([...new Set(filteredTasks.map((task) => task.task.name))]);
-        setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
+        //setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
     }, [selectedUser, selectedDeadline, selectedTaskName, tasks]);
 
     const filterTasks = (tasksToFilter) => {
@@ -86,7 +99,7 @@ const AdminUserTasks = () => {
 
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/usertask/${id}`, { headers: AuthService.getAuthHeader() });
+            await axios.delete(`${API_BASE_URL}/usertask/${id}`, { headers: AuthService.getAuthHeader() });
             fetchTasks();
         } catch (error) {
             console.error("Error deleting task:", error);
@@ -101,7 +114,9 @@ const AdminUserTasks = () => {
                 <select className="form-select" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
                     <option value="">-- All Users --</option>
                     {users.map((user) => (
-                        <option key={user} value={user}>{user}</option>
+                        <option key={user.username} value={user.username}>
+                            {user.name} ({user.username})
+                        </option>
                     ))}
                 </select>
             </div>

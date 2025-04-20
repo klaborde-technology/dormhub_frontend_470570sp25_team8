@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
 
 export default function ViewUserTask() {
     const [userTask, setUserTask] = useState({
@@ -12,6 +13,8 @@ export default function ViewUserTask() {
     });
 
     const { id } = useParams();
+    const navigate = useNavigate();
+    const userId = AuthService.getUserId();
 
     useEffect(() => {
         loadUserTask();
@@ -19,13 +22,26 @@ export default function ViewUserTask() {
 
     const loadUserTask = async () => {
         try {
-            const result = await axios.get(`http://localhost:8080/usertask/${id}`, {
+            const result = await axios.get(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
             console.log("Loaded user task:", result.data);
             setUserTask(result.data);
         } catch (error) {
             console.error("Error loading user-task:", error);
+        }
+    };
+
+    const handleBack = () => {
+        const role = AuthService.getUserRole();
+        const userId = AuthService.getUserId();
+
+        if (role === "ADMIN") {
+            navigate("/admintasks");
+        } else if (role === "PRIVILEGED_USER") {
+            navigate(`/usertasks/user/${userId}`);
+        } else {
+            navigate("/");
         }
     };
 
@@ -57,9 +73,9 @@ export default function ViewUserTask() {
                             </li>
                         </ul>
                     </div>
-                    <Link className="btn btn-primary my-2" to="/admintasks">
-                        Back to Dashboard
-                    </Link>
+                    <button className="btn btn-primary my-2" onClick={handleBack}>
+                        Return to Dashboard
+                    </button>
                 </div>
             </div>
         </div>

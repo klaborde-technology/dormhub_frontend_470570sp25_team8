@@ -25,11 +25,14 @@ import AddUserTask from "./tasks/AddUserTask";
 import EditUserTask from "./tasks/EditUserTask";
 import ViewUserTask from "./tasks/ViewUserTask";
 import PrivilegeUserTasks from "./pages/PrivilegeUserTasks";
+import ViewSampleUserTask from "./tasks/ViewSampleUserTask";
 
-// Protected route component
+
 const ProtectedRoute = ({ element, requiredRoles }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const userRole = AuthService.getUserRole();
+  const userId = AuthService.getUserId();
+  
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -39,10 +42,14 @@ const ProtectedRoute = ({ element, requiredRoles }) => {
     return <Navigate to="/unauthorized" replace />;
   }
 
+  if (!userId) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+  <Navigate to={`/usertasks/user/${userId}`} replace />;
+
   return <>{element}</>;
 };
 
-// Wrap App with Router (so we can use useLocation in App)
 function AppWrapper() {
   return (
     <Router>
@@ -67,7 +74,7 @@ function App() {
               AuthService.getUserRole() === "ADMIN" ? (
                 <Navigate to="/admintasks" replace />
               ) : AuthService.getUserRole() === "PRIVILEGED_USER" ? (
-                <Navigate to="/privilegeusertasks" replace />
+                <Navigate to={`/usertasks/user/${AuthService.getUserId()}`} replace />
               ) : (
                 <Home />
               )
@@ -96,7 +103,7 @@ function App() {
 
         {/* Privileged User routes */}
         <Route
-          path="/privilegeusertasks"
+          path="/usertasks/user/:id"
           element={<ProtectedRoute element={<PrivilegeUserTasks />} requiredRoles={["PRIVILEGED_USER"]} />}
         />
 
@@ -123,6 +130,7 @@ function App() {
         {/* Public routes */}
         <Route path="/viewuser/:id" element={<ViewUser />} />
         <Route path="/viewtask/:id" element={<ViewTask />} />
+        <Route path="/viewsampletask/sampleuser/:id" element={<ViewSampleUserTask />} />
       </Routes>
     </div>
   );

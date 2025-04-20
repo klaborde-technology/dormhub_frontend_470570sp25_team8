@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { API_BASE_URL } from '../api';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ function Login() {
         setLoading(true);
 
         try {
-            const response = await axios.post("http://localhost:8080/auth/login", {
+            const response = await axios.post(`${API_BASE_URL}/auth/login`, {
                 email,
                 password,
             });
@@ -34,15 +35,16 @@ function Login() {
 
             setTimeout(() => {
                 const role = AuthService.getUserRole();
+                const userId = AuthService.getUserId();
 
                 if (role === "ADMIN") {
                     navigate("/admintasks", { replace: true });
                 } else if (role === "PRIVILEGED_USER") {
-                    navigate("/privilegeusertasks", { replace: true });
+                    navigate(`/usertasks/user/${userId}`, { replace: true });
                 } else {
                     navigate("/", { replace: true });
                 }
-            }, 1500);
+            }, 500);
         } catch (error) {
             console.error("Login error:", error);
             setMessage("❌ Login failed. Check your credentials.");

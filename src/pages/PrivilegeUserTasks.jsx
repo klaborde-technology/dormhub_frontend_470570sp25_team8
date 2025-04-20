@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from '../api';
+
 
 const PrivilegeUserTasks = () => {
     const [inProgressTasks, setInProgressTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
+    const { id } = useParams(); // Get user ID from URL params 
+    const userId = AuthService.getUserId(); // Get user ID from AuthService
+    const navigate = useNavigate();
 
     // Fetch tasks from the backend
     const fetchTasks = async () => {
         try {
+            const userId = AuthService.getUserId(); // Get the user ID from AuthService
+            console.log("User ID:", userId);
             const inProgressResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=false",
+                `${API_BASE_URL}/usertasks/user/${userId}?status=false`,
                 { headers: AuthService.getAuthHeader() }
             );
             const completedResponse = await axios.get(
-                "http://localhost:8080/usertasks?status=true",
+                `${API_BASE_URL}/usertasks/user/${userId}?status=true`,
                 { headers: AuthService.getAuthHeader() }
             );
             setInProgressTasks(inProgressResponse.data);
@@ -29,7 +37,7 @@ const PrivilegeUserTasks = () => {
     const toggleTaskStatus = async (id, currentStatus, currentDeadline) => {
         try {
             await axios.put(
-                `http://localhost:8080/usertask/${id}`,
+                `${API_BASE_URL}/usertask/${id}`,
                 { 
                     status: !currentStatus, 
                     deadline: currentDeadline // Keep the deadline unchanged
@@ -45,7 +53,7 @@ const PrivilegeUserTasks = () => {
     // Delete a task by id and refresh the list
     const deleteTask = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/usertask/${id}`, {
+            await axios.delete(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
             fetchTasks();
@@ -58,6 +66,12 @@ const PrivilegeUserTasks = () => {
     useEffect(() => {
         fetchTasks();
     }, []);
+
+    useEffect(() => {
+        if (String(id) !== String(userId)) {
+            navigate("/unauthorized", { replace: true }); // Prevent access to other users' tasks
+        }
+    }, [id, userId, navigate]);
 
     // Render table for tasks
     const renderTable = (tasksToRender) => (
@@ -82,6 +96,7 @@ const PrivilegeUserTasks = () => {
                                 <input
                                     type="checkbox"
                                     checked={task.status} // Checkbox reflects task status
+                                    disabled={AuthService.getUserRole() !== "PRIVILEGED_USER"} // Disable checkbox for non-privileged users
                                     onChange={() => 
                                         toggleTaskStatus(task.id, task.status, task.deadline) // Pass deadline here
                                     }
@@ -94,12 +109,14 @@ const PrivilegeUserTasks = () => {
                                 >
                                     View
                                 </Link>
+                                {AuthService.getUserRole() === "ADMIN" && (
                                 <button
                                     className="btn btn-danger btn-sm"
                                     onClick={() => deleteTask(task.id)}
                                 >
                                     Delete
                                 </button>
+                                )}
                             </td>
                         </tr>
                     ))
@@ -118,7 +135,7 @@ const PrivilegeUserTasks = () => {
         <div className="container-fluid mt-4">
             {/* In-progress Tasks Table */}
             <div className="mb-5">
-                <h2>Task List</h2>
+                <h2>In-Progress Task List</h2>
                 {renderTable(inProgressTasks)}
             </div>
 

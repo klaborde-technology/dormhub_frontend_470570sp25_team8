@@ -1,15 +1,16 @@
 import axios from "axios";
+import { API_BASE_URL } from '../api';
 
-const API_URL = "http://localhost:8080/auth"; // Backend auth API
+const API_URL = `${ API_BASE_URL }/auth`; // Backend auth API
 
 const AuthService = {
     // ✅ Register a new user
-    register: async (email, password, role) => {
+    register: async (name, username, email, role, password) => {
         try {
-            const response = await axios.post(`${API_URL}/register`, { email, password, role });
+            const response = await axios.post(`${ API_BASE_URL }/auth/register`, { name, username, email, role, password });
             return response.data;
         } catch (error) {
-            console.error("Registration error:", error.response?.data || error.message);
+            console.error("Registration error:", error.response?.data?.message || error.response?.data || error.message);
             throw error;
         }
     },
@@ -63,6 +64,21 @@ const AuthService = {
         } catch (error) {
             console.error("Error decoding token:", error);
             return "GUEST";
+        }
+    },
+
+    // ✅ Get user ID from token
+    getUserId: () => {
+        const token = localStorage.getItem("token");
+        if (!token || token.split(".").length !== 3) return null;
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            console.log("Decoded JWT payload:", payload);
+            return payload.id || null; // Adjust based on your token structure
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return null;
         }
     },
 
