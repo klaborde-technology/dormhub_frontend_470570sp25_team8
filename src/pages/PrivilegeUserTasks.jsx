@@ -60,95 +60,40 @@ const PrivilegeUserTasks = () => {
         }
     };
 
-    const renderTable = (tasks) => (
-        <div className="table-responsive d-none d-md-block">
-            <table className="table table-striped table-hover align-middle">
-                <thead className="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Task Name</th>
-                        <th>Deadline</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {tasks.length > 0 ? (
-                        tasks.map((task) => (
-                            <tr key={task.id}>
-                                <td>{task.id}</td>
-                                <td>{task.task.name}</td>
-                                <td>{task.deadline}</td>
-                                <td>
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input toggle-modern"
-                                        checked={task.status}
-                                        disabled={AuthService.getUserRole() !== "PRIVILEGED_USER"}
-                                        onChange={() =>
-                                            toggleTaskStatus(task.id, task.status, task.deadline)
-                                        }
-                                    />
-                                </td>
-                                <td className="text-center">
-                                    <div className="d-flex justify-content-center gap-2">
-                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-primary btn-sm view-btn">
-                                            <FaEye />
-                                        </Link>
-                                        {AuthService.getUserRole() === "ADMIN" && (
-                                            <button
-                                                className="btn btn-outline-danger btn-sm"
-                                                onClick={() => deleteTask(task.id)}
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        )}
-                                    </div>
-                                </td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="5" className="text-center text-muted">No tasks found.</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        </div>
-    );
+    const renderTable = (tasks) => {
+        const sortedTasks = [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
-    const renderCards = (tasks) => (
-        <div className="d-md-none">
-            <div className="row g-3">
-                {tasks.length > 0 ? (
-                    tasks.map((task) => (
-                        <div key={task.id} className="col-12">
-                            <div className="card shadow-lg border-0 rounded-4 card-hover">
-                                <div className="card-body">
-                                    <h5 className="card-title d-flex align-items-center gap-2">
-                                        {task.status ? (
-                                            <FaCheckCircle className="text-success" />
-                                        ) : (
-                                            <FaRegCircle className="text-warning" />
-                                        )}
-                                        {task.task.name}
-                                    </h5>
-                                    <p className="mb-2"><strong>Deadline:</strong> {task.deadline}</p>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div className="form-check">
-                                            <input
-                                                type="checkbox"
-                                                className="form-check-input toggle-modern"
-                                                checked={task.status}
-                                                disabled={AuthService.getUserRole() !== "PRIVILEGED_USER"}
-                                                onChange={() =>
-                                                    toggleTaskStatus(task.id, task.status, task.deadline)
-                                                }
-                                            />
-                                            <label className="form-check-label">
-                                                Mark as {task.status ? "In Progress" : "Completed"}
-                                            </label>
-                                        </div>
+        return (
+            <div className="table-responsive d-none d-md-block">
+                <table className="table table-striped table-hover align-middle">
+                    <thead className="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Task Name</th>
+                            <th>Deadline</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sortedTasks.length > 0 ? (
+                            sortedTasks.map((task, index) => (
+                                <tr key={task.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{task.task.name}</td>
+                                    <td>{task.deadline}</td>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            className="form-check-input toggle-modern"
+                                            checked={task.status}
+                                            disabled={AuthService.getUserRole() !== "PRIVILEGED_USER"}
+                                            onChange={() =>
+                                                toggleTaskStatus(task.id, task.status, task.deadline)
+                                            }
+                                        />
+                                    </td>
+                                    <td className="text-center">
                                         <div className="d-flex justify-content-center gap-2">
                                             <Link to={`/viewusertask/${task.id}`} className="btn btn-primary btn-sm view-btn">
                                                 <FaEye />
@@ -162,17 +107,81 @@ const PrivilegeUserTasks = () => {
                                                 </button>
                                             )}
                                         </div>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="text-center text-muted">No tasks found.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        );
+    };
+
+    const renderCards = (tasks) => {
+        const sortedTasks = [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+        return (
+            <div className="d-md-none">
+                <div className="row g-3">
+                    {sortedTasks.length > 0 ? (
+                        sortedTasks.map((task, index) => (
+                            <div key={task.id} className="col-12">
+                                <div className="card shadow-lg border-0 rounded-4 card-hover">
+                                    <div className="card-body">
+                                        <p className="mb-1"><strong>#</strong> {index + 1}</p>
+                                        <h5 className="card-title d-flex align-items-center gap-2">
+                                            {task.status ? (
+                                                <FaCheckCircle className="text-success" />
+                                            ) : (
+                                                <FaRegCircle className="text-warning" />
+                                            )}
+                                            {task.task.name}
+                                        </h5>
+                                        <p className="mb-2"><strong>Deadline:</strong> {task.deadline}</p>
+                                        <div className="d-flex justify-content-between align-items-center">
+                                            <div className="form-check">
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input toggle-modern"
+                                                    checked={task.status}
+                                                    disabled={AuthService.getUserRole() !== "PRIVILEGED_USER"}
+                                                    onChange={() =>
+                                                        toggleTaskStatus(task.id, task.status, task.deadline)
+                                                    }
+                                                />
+                                                <label className="form-check-label">
+                                                    Mark as {task.status ? "In Progress" : "Completed"}
+                                                </label>
+                                            </div>
+                                            <div className="d-flex justify-content-center gap-2">
+                                                <Link to={`/viewusertask/${task.id}`} className="btn btn-primary btn-sm view-btn">
+                                                    <FaEye />
+                                                </Link>
+                                                {AuthService.getUserRole() === "ADMIN" && (
+                                                    <button
+                                                        className="btn btn-outline-danger btn-sm"
+                                                        onClick={() => deleteTask(task.id)}
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
-                ) : (
-                    <div className="text-center text-muted">No tasks found.</div>
-                )}
+                        ))
+                    ) : (
+                        <div className="text-center text-muted">No tasks found.</div>
+                    )}
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     return (
         <div
