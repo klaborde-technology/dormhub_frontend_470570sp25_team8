@@ -29,12 +29,12 @@ export default function Home() {
         },
         {
           element: '#studentDropdown',
-          intro: 'Use this drowpdown to select a student. The tasks will be filtered based on the selected student.',
+          intro: 'Use this dropdown to select a student. The tasks will be filtered based on the selected student.',
           position: 'bottom',
         },
         {
           element: '#taskDropdown',
-          intro: 'Use this drowpdown to select a task. The students tasks will be filtered based on the selected task.',
+          intro: 'Use this dropdown to select a task. The students tasks will be filtered based on the selected task.',
           position: 'bottom',
         },
         {
@@ -44,16 +44,16 @@ export default function Home() {
         },
         {
           element: '.hide-column-name',
-          intro: 'IMPORTANT**: This column shows the task status. Yellow (🟡) means "In-Progress" and green (🟢) means "Completed".',
+          intro: 'IMPORTANT**: This column shows the task status. Red (🔴) means "In-Progress" and green (🟢) means "Completed".',
           position: 'bottom',
         },
         {
-          element: '.view-button',  // Ensure the class name for the View button is used
+          element: '.view-button',
           intro: 'Click to view the details of the selected task.',
           position: 'left',
         },
         {
-          element: '.delete-button',  // Ensure the class name for the View button is used
+          element: '.delete-button', 
           intro: 'Guess what this button does? It deletes this row. Refresh the page to undo any changes you have made.',
           position: 'left',
         },
@@ -140,7 +140,7 @@ export default function Home() {
             <option value="">-- Choose a Task --</option>
             {allUsers
               .filter((user) => user.username === selectedUser)
-              .flatMap((user) => user.tasks) // Flatten all tasks from selected users
+              .flatMap((user) => user.tasks) 
               .map((task, index) => (
                 <option key={index} value={task}>
                   {task}
@@ -170,7 +170,7 @@ export default function Home() {
             <th>Task</th>
             <th>Deadline</th>
             <th className="hide-column-name"
-              data-intro="IMPORTANT**: This column shows the task status. Yellow (🟡) means 'In-Progress' and green (🟢) means 'Completed'."
+              data-intro="IMPORTANT**: This column shows the task status. Red (🔴) means 'In-Progress' and green (🟢) means 'Completed'."
               data-step="5"
               data-position="bottom"
             >
