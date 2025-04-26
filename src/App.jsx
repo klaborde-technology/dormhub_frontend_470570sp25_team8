@@ -26,13 +26,14 @@ import EditUserTask from "./tasks/EditUserTask";
 import ViewUserTask from "./tasks/ViewUserTask";
 import PrivilegeUserTasks from "./pages/PrivilegeUserTasks";
 import ViewSampleUserTask from "./tasks/ViewSampleUserTask";
+import AddTask from "./tasks/AddTask";
 
 
 const ProtectedRoute = ({ element, requiredRoles }) => {
   const isAuthenticated = AuthService.isAuthenticated();
   const userRole = AuthService.getUserRole();
   const userId = AuthService.getUserId();
-  
+
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -115,7 +116,7 @@ function App() {
 
         {/* Task routes */}
         <Route
-          path="/addtask"
+          path="/addusertask"
           element={<ProtectedRoute element={<AddUserTask />} requiredRoles={["ADMIN"]} />}
         />
         <Route
@@ -127,6 +128,11 @@ function App() {
           element={<ProtectedRoute element={<ViewUserTask />} requiredRoles={["ADMIN", "PRIVILEGED_USER"]} />}
         />
 
+        {/* Adding Task routes */}
+        <Route
+          path="/addtask"
+          element={<ProtectedRoute element={<AddTask />} requiredRoles={["ADMIN"]} />}
+        />
         {/* Public routes */}
         <Route path="/viewuser/:id" element={<ViewUser />} />
         <Route path="/viewtask/:id" element={<ViewTask />} />

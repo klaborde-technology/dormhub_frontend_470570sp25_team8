@@ -27,10 +27,10 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: "#6a1b9a", padding: "0.75rem 1rem" }}>
       <div className="container-fluid d-flex justify-content-between align-items-center">
         <Link className="navbar-brand d-flex align-items-center text-white" to="/">
-          <img 
-            src="/images/home.png" 
-            alt="Home" 
-            style={{ width: "30px", height: "30px", marginRight: "10px", filter: "brightness(0) invert(1)" }} 
+          <img
+            src="/images/home.png"
+            alt="Home"
+            style={{ width: "30px", height: "30px", marginRight: "10px", filter: "brightness(0) invert(1)" }}
           />
           Dormhub
         </Link>
@@ -57,9 +57,14 @@ export default function Navbar() {
                   style={{ right: 0, left: "auto", marginTop: "0.5rem" }}
                 >
                   {userRole === "ADMIN" && (
-                    <Link className="dropdown-item" to="/addtask">
-                      Add Tasks
-                    </Link>
+                    <>
+                      <Link className="dropdown-item" to="/addusertask">
+                        Assign Tasks
+                      </Link>
+                      <Link className="dropdown-item" to="/addtask">
+                        Add New Task
+                      </Link>
+                    </>
                   )}
                   <button className="dropdown-item text-danger" onClick={handleLogout}>
                     Logout
