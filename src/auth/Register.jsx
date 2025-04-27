@@ -1,43 +1,62 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "./AuthService";
-import "bootstrap/dist/css/bootstrap.min.css";
+import AuthService from "../auth/AuthService";
 
-function Register() {
+// The component accepts a prop which indicates the registration context.
+// If registrationType is "adminRegistration", then an admin is registering a new user
+// (and the new user will be a privileged user). Otherwise (or if omitted), the guest registration
+// form will create an admin account.
+function Register({ registrationType = "guest" }) {
+    const navigate = useNavigate();
+
+    // Determine the default role based on the registration context.
+    // Guest registration → account is ADMIN.
+    // Admin registration → account is PRIVILEGED_USER.
+    const defaultRole =
+        registrationType === "adminRegistration" ? "PRIVILEGED_USER" : "ADMIN";
+
+    // Form state
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [username, setUsername] = useState(""); // Added state for username
-    const [name, setName] = useState(""); // Added state for name
-    const [role, setRole] = useState("PRIVILEGED_USER");
+    const [username, setUsername] = useState("");
+    const [name, setName] = useState("");
+    const [role] = useState(defaultRole); // Fixed role; no setter needed
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
+    // Toggle password visibility
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
+    // Handle registration form submission
     const handleRegister = async (e) => {
         e.preventDefault();
         setMessage("");
         setLoading(true);
 
         try {
+            // Call your AuthService.register function with the fixed role
             const response = await AuthService.register(name, username, email, role, password);
 
             if (response) {
-                setMessage("✅ Registration successful! Redirecting to login...");
-                setTimeout(() => navigate("/login"), 1500);
+                setMessage("✅ Registration successful! Redirecting...");
+                if (registrationType === "guest") {
+                    // After guest registration (creating an admin account), redirect to login
+                    setTimeout(() => navigate("/login"), 1500);
+                } else {
+                    setTimeout(() => navigate("/admintasks"), 1500);
+                }
             } else {
                 setMessage("❌ Registration failed. No response from server.");
             }
         } catch (error) {
             console.error("Registration failed:", error);
-
-            // Extract backend error message properly
-            const errorMessage = error.response?.data?.message || error.response?.data || "❌ Registration failed: Unknown error.";
-
+            const errorMessage =
+                error.response?.data?.message ||
+                error.response?.data ||
+                "❌ Registration failed: Unknown error.";
             setMessage(errorMessage);
         } finally {
             setLoading(false);
@@ -48,7 +67,7 @@ function Register() {
         <div
             className="container-fluid d-flex justify-content-center align-items-center vh-100"
             style={{
-                background: "linear-gradient(to right, #d9a7c7, #fffcdc)", // Soft purple-pink blend
+                background: "linear-gradient(to right, #d9a7c7, #fffcdc)",
             }}
         >
             <div
@@ -68,7 +87,9 @@ function Register() {
                         className="mb-2"
                     />
                     <h3 className="text-purple fw-bold" style={{ color: "#6f42c1" }}>
-                        Create an Account
+                        {registrationType === "guest"
+                            ? "Create Admin Account"
+                            : "Add New Privileged User"}
                     </h3>
                 </div>
 
@@ -142,19 +163,18 @@ function Register() {
                         />
                     </div>
 
+                    {/* Fixed Role field – shown as read-only */}
                     <div className="mb-4">
                         <label htmlFor="role" className="form-label fw-semibold">
                             Role
                         </label>
-                        <select
+                        <input
+                            type="text"
                             id="role"
-                            className="form-select rounded-3"
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                        >
-                            <option value="PRIVILEGED_USER">Privileged User</option>
-                            <option value="ADMIN">Admin</option>
-                        </select>
+                            className="form-control rounded-3"
+                            value={role === "ADMIN" ? "Admin" : "Privileged User"}
+                            disabled
+                        />
                     </div>
 
                     <button
@@ -186,11 +206,13 @@ function Register() {
                     </div>
                 )}
 
-                <div className="text-center mt-4">
-                    <small className="text-muted">
-                        Already have an account? <a href="/login">Login</a>
-                    </small>
-                </div>
+                {registrationType === "guest" && (
+                    <div className="text-center mt-4">
+                        <small className="text-muted">
+                            Already have an account? <a href="/login">Login</a>
+                        </small>
+                    </div>
+                )}
             </div>
         </div>
     );
