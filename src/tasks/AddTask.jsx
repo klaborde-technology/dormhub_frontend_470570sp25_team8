@@ -31,7 +31,7 @@ export default function AddTask() {
     };
 
     return (
-        <div className="custom-container">
+        <div className="custom-container" style={{ paddingTop: "30px", marginTop: "20px" }}>
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                     <h2 className="text-center m-4">Add New Task</h2>
