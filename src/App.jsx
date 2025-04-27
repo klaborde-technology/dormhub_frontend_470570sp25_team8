@@ -91,8 +91,9 @@ function App() {
         {/* Admin routes */}
         <Route
           path="/adduser"
-          element={<ProtectedRoute element={<AddUser />} requiredRoles={["ADMIN"]} />}
+          element={<ProtectedRoute element={<Register registrationType="adminRegistration" />} requiredRoles={["ADMIN"]} />}
         />
+
         <Route
           path="/edituser/:id"
           element={<ProtectedRoute element={<EditUser />} requiredRoles={["ADMIN"]} />}
