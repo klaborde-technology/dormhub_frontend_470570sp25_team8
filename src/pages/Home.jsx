@@ -38,7 +38,7 @@ export default function Home() {
           position: 'bottom',
         },
         {
-          element: '.table th',
+          element: '.table tr',
           intro: 'These are the column headers. Each column gives important details about a student and their task.',
           position: 'bottom',
         },
@@ -83,51 +83,83 @@ export default function Home() {
   };
 
   const handleDelete = (id) => {
-    setUser(prev => prev.filter(u => u.username !== username));
-    setTargetTable(prev => prev.filter(u => u.username !== username));
-  };
+    setUser(prev => prev.filter(u => u.id !== id));
+    setTargetTable(prev => prev.filter(u => u.id !== id));
+  };  
 
   const allUsers = [...user, ...targetTable];
   const selectedUserObj = allUsers.find(u => u.username.toString() === selectedUser);
 
   return (
-    <div className="container-fluid py-4">
-      <div className="text-center mb-3">
-        <h2>Task Records</h2>
-        <div className="d-flex justify-content-end mb-3">
-          <button className="btn btn-success" onClick={startTour}>
-            Start Tour
-          </button>
-          <button className="btn btn-info" onClick={moveToTargetTable}
-            data-intro="Click to move completed tasks to the Completed section."
-            data-step="1"
-            data-position="left">
-            Move Completed Tasks
-          </button>
+    <div
+      className="container-fluid py-5 px-3"
+      style={{
+          background: "linear-gradient(to right, #6a11cb, #2575fc)", // Sleek gradient background
+          minHeight: "100vh",
+      }}>
+      <div className="d-flex justify-content-between align-items-center mb-3" style={{paddingTop: '30px'}}>
+        <button className="btn" 
+        style={{ 
+          backgroundColor: '#6a11cb', // Gradient color
+          color: 'white',
+          borderRadius: '5px',
+          padding: '10px 20px',
+          fontSize: '16px',
+          cursor: 'pointer',
+          border: '1px solid lightblue',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          transition: 'background-color 0.3s ease, transform 0.3s ease',
+         }} 
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2575fc'} // Change color on hover
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#6a11cb'} // Revert color on mouse out
+        onClick={startTour}>
+          Start Tour
+        </button>
+        <button className="btn btn-info" 
+        style={{
+          backgroundColor: '#2575fc', // Gradient color
+          color: 'white',
+          borderRadius: '5px',
+          padding: '10px 20px',
+          fontSize: '16px',
+          cursor: 'pointer',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          transition: 'background-color 0.3s ease, transform 0.3s ease',
+         }}
+        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#6a11cb'} // Change color on hover
+        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2575fc'} // Revert color on mouse out
+        onClick={moveToTargetTable}
+          data-intro="Click to move completed tasks to the Completed section."
+          data-step="1"
+          data-position="left">
+          Move Completed Tasks
+        </button>
+      </div>
+
+
+      <div className="dropdown-section mb-4 d-flex justify-content-center" style={{ gap: '200px' }}>
+        <div style={{ flex: 1, maxWidth: '300px' }}>
+          <label htmlFor="studentDropdown" style={{ color: "white" }}>Select Student:</label>
+          <select 
+            id="studentDropdown" 
+            className="form-select" 
+            value={selectedUser} 
+            onChange={handleUserChange}
+            data-intro="Use this drowpdown to select a student. The tasks will be filtered based on the selected student."
+            data-step="2"
+            data-position="bottom">
+            <option value="">-- Choose a Student --</option>
+            {Array.from(new Map(allUsers.map(u => [u.username, u])).values()).map((u) => (
+              <option key={u.username} value={u.username}>
+                {u.username}
+              </option>
+            ))}
+          </select>
         </div>
-      </div>
+      
 
-      <div className="dropdown-section mb-4">
-        <label htmlFor="studentDropdown">Select Student:</label>
-        <select 
-          id="studentDropdown" 
-          className="form-select" 
-          value={selectedUser} 
-          onChange={handleUserChange}
-          data-intro="Use this drowpdown to select a student. The tasks will be filtered based on the selected student."
-          data-step="2"
-          data-position="bottom">
-          <option value="">-- Choose a Student --</option>
-          {Array.from(new Map(allUsers.map(u => [u.username, u])).values()).map((u) => (
-            <option key={u.username} value={u.username}>
-              {u.username}
-            </option>
-          ))}
-        </select>
-      </div>
-
-        <div className="dropdown-section mb-4">
-          <label htmlFor="taskDropdown">Select Task:</label>
+        <div style={{ flex: 1, maxWidth: '300px' }}>
+          <label htmlFor="taskDropdown" style={{ color: "white" }}>Select Task:</label>
           <select 
             id="taskDropdown" 
             className="form-select" 
@@ -148,16 +180,19 @@ export default function Home() {
               ))}
           </select>
         </div>
+      </div>
 
-      {selectedUser && selectedTask && (
-        <div className="mt-4">
-          <h4>Selection Summary:</h4>
-          <p><strong>Student:</strong> {selectedUserObj?.username}</p>
-          <p><strong>Task:</strong> {selectedTask}</p>
-        </div>
-      )}
+      <div className="container-fluid py-5 px-3" style={{
+          background: "linear-gradient(to right, #6a11cb, #2575fc)",
+          minHeight: "100vh",
+      }}>
+      
+      <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
 
-      <h2>In-Progress</h2>
+      <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+        <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+          In-Progress
+        </h2>
       <table className="table border shadow table-striped table-hover" style={{ tableLayout: 'fixed', width: '100%' }}>
         <thead>
           <tr
@@ -223,56 +258,62 @@ export default function Home() {
             ))}
           </tbody>
         </table>
+      </div>
 
-      <h2>Completed</h2>
-      <table className="table border shadow table-striped table-hover" style={{ tableLayout: 'fixed', width: '100%' }}>
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th className="hide-on-mobile">Email</th>
-            <th>Task</th>
-            <th>Deadline</th>
-            <th className="hide-column-name">Task Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {targetTable
-            .filter((u) => {
-              const matchesUser = !selectedUser || u.username.toString() === selectedUser;
-              const matchesTask = !selectedTask || u.tasks?.includes(selectedTask);
-              return matchesUser && matchesTask;
-            })
-            .map((user, index) => (
-            <tr key={index}>
-              <td>{user.username}</td>
-              <td className="hide-on-mobile">{user.email}</td>
-              <td>{user.tasks?.join(", ")}</td>
-              <td>{user.deadline}</td>
-              <td>
-                <span className="circle red-circle" style={{ display: user.status === 'In-Progress' ? 'inline-block' : 'none' }}></span>
-                <span className="circle green-circle" style={{ display: user.status === 'Completed' ? 'inline-block' : 'none' }}></span>
-                <span className="status-text" style={{ color: user.status === 'In-Progress' ? 'red' : 'green' }}>
-                  {user.status}
-                </span>
-              </td>
-              <td>
-                <Link
-                  to={`/viewsampletask/sampleuser/${user.id}`}
-                  state={{ user }}
-                  className="btn btn-primary btn-sm"
-                >
-                  View
-                </Link>
-                <button className="btn btn-danger btn-sm mx-1" 
-                onClick={() => handleDelete(user.id)}
-                >
-                  Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+        <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+          Completed
+        </h2>
+            <table className="table border shadow table-striped table-hover" style={{ tableLayout: 'fixed', width: '100%' }}>
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th className="hide-on-mobile">Email</th>
+                  <th>Task</th>
+                  <th>Deadline</th>
+                  <th className="hide-column-name">Task Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {targetTable
+                  .filter((u) => {
+                    const matchesUser = !selectedUser || u.username.toString() === selectedUser;
+                    const matchesTask = !selectedTask || u.tasks?.includes(selectedTask);
+                    return matchesUser && matchesTask;
+                  })
+                  .map((user, index) => (
+                  <tr key={index}>
+                    <td>{user.username}</td>
+                    <td className="hide-on-mobile">{user.email}</td>
+                    <td>{user.tasks?.join(", ")}</td>
+                    <td>{user.deadline}</td>
+                    <td>
+                      <span className="circle red-circle" style={{ display: user.status === 'In-Progress' ? 'inline-block' : 'none' }}></span>
+                      <span className="circle green-circle" style={{ display: user.status === 'Completed' ? 'inline-block' : 'none' }}></span>
+                      <span className="status-text" style={{ color: user.status === 'In-Progress' ? 'red' : 'green' }}>
+                        {user.status}
+                      </span>
+                    </td>
+                    <td>
+                      <Link
+                        to={`/viewsampletask/sampleuser/${user.id}`}
+                        state={{ user }}
+                        className="btn btn-primary btn-sm">
+                        View
+                      </Link>
+                      <button className="btn btn-danger btn-sm mx-1" 
+                      onClick={() => handleDelete(user.id)}
+                      >
+                        Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
