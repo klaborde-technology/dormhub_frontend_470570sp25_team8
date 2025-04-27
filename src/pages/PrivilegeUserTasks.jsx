@@ -29,8 +29,16 @@ const PrivilegeUserTasks = () => {
                 axios.get(`${API_BASE_URL}/usertasks/user/${userId}?status=false`, headers),
                 axios.get(`${API_BASE_URL}/usertasks/user/${userId}?status=true`, headers)
             ]);
-            setInProgressTasks(inProgressResponse.data);
-            setCompletedTasks(completedResponse.data);
+            const inProgressTasksWithIndex = inProgressResponse.data
+                .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+                .map((task, index) => ({ ...task, originalIndex: task.originalIndex || index + 1 }));
+
+            const completedTasksWithIndex = completedResponse.data
+                .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+                .map((task, index) => ({ ...task, originalIndex: task.originalIndex || index + 1 }));
+
+            setInProgressTasks(inProgressTasksWithIndex);
+            setCompletedTasks(completedTasksWithIndex);
         } catch (error) {
             console.error("Error fetching tasks:", error);
         }
@@ -61,8 +69,6 @@ const PrivilegeUserTasks = () => {
     };
 
     const renderTable = (tasks) => {
-        const sortedTasks = [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-
         return (
             <div className="table-responsive d-none d-md-block">
                 <table className="table table-striped table-hover align-middle">
@@ -76,10 +82,10 @@ const PrivilegeUserTasks = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedTasks.length > 0 ? (
-                            sortedTasks.map((task, index) => (
+                        {tasks.length > 0 ? (
+                            tasks.map((task) => (
                                 <tr key={task.id}>
-                                    <td>{index + 1}</td>
+                                    <td>{task.originalIndex}</td>
                                     <td>{task.task.name}</td>
                                     <td>{task.deadline}</td>
                                     <td>
@@ -122,17 +128,15 @@ const PrivilegeUserTasks = () => {
     };
 
     const renderCards = (tasks) => {
-        const sortedTasks = [...tasks].sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-
         return (
             <div className="d-md-none">
                 <div className="row g-3">
-                    {sortedTasks.length > 0 ? (
-                        sortedTasks.map((task, index) => (
+                    {tasks.length > 0 ? (
+                        tasks.map((task) => (
                             <div key={task.id} className="col-12">
                                 <div className="card shadow-lg border-0 rounded-4 card-hover">
                                     <div className="card-body">
-                                        <p className="mb-1"><strong>#</strong> {index + 1}</p>
+                                        <p className="mb-1"><strong>#</strong> {task.originalIndex}</p>
                                         <h5 className="card-title d-flex align-items-center gap-2">
                                             {task.status ? (
                                                 <FaCheckCircle className="text-success" />
