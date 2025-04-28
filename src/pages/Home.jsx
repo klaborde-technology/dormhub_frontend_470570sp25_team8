@@ -53,7 +53,7 @@ export default function Home() {
           position: 'left',
         },
         {
-          element: '.delete-button', 
+          element: '.delete-button',
           intro: 'Guess what this button does? It deletes this row. Refresh the page to undo any changes you have made.',
           position: 'left',
         },
@@ -75,7 +75,7 @@ export default function Home() {
   const handleUserChange = (e) => {
     setSelectedUser(e.target.value);
     setSelectedTask("");
-    
+
   };
 
   const handleTaskChange = (e) => {
@@ -85,50 +85,107 @@ export default function Home() {
   const handleDelete = (id) => {
     setUser(prev => prev.filter(u => u.id !== id));
     setTargetTable(prev => prev.filter(u => u.id !== id));
-  };  
+  };
 
   const allUsers = [...user, ...targetTable];
   const selectedUserObj = allUsers.find(u => u.username.toString() === selectedUser);
 
   return (
+
     <div
       className="container-fluid py-5 px-3"
       style={{
-          background: "linear-gradient(to right, #6a11cb, #2575fc)", // Sleek gradient background
-          minHeight: "100vh",
+        background: "linear-gradient(to right, #6a11cb, #2575fc)", // Sleek gradient background
+        minHeight: "100vh",
+        marginTop: "60px",
+        paddingTop: "20px",
+
       }}>
-      <div className="d-flex justify-content-between align-items-center mb-3" style={{paddingTop: '30px'}}>
-        <button className="btn" 
-        style={{ 
-          backgroundColor: '#6a11cb', // Gradient color
-          color: 'white',
-          borderRadius: '5px',
-          padding: '10px 20px',
-          fontSize: '16px',
-          cursor: 'pointer',
-          border: '1px solid lightblue',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-          transition: 'background-color 0.3s ease, transform 0.3s ease',
-         }} 
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2575fc'} // Change color on hover
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#6a11cb'} // Revert color on mouse out
-        onClick={startTour}>
-          Start Tour
-        </button>
-        <button className="btn btn-info" 
+
+      {/* Main Content */}
+    <div className="flex-grow-1 container-fluid py-5 px-3">
+      {/* Hero Section */}
+      <div
+        className="hero-section text-center text-white py-5"
         style={{
-          backgroundColor: '#2575fc', // Gradient color
-          color: 'white',
-          borderRadius: '5px',
-          padding: '10px 20px',
-          fontSize: '16px',
-          cursor: 'pointer',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-          transition: 'background-color 0.3s ease, transform 0.3s ease',
-         }}
-        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#6a11cb'} // Change color on hover
-        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2575fc'} // Revert color on mouse out
-        onClick={moveToTargetTable}
+             // Gradient background
+              padding: "100px 20px",
+              borderRadius: "10px",
+              }}
+              >
+              <h1 className="fw-bold display-4">Welcome to DormHub</h1>
+              <p className="fs-5">
+              Your ultimate platform for managing dormitory tasks and responsibilities.
+              Stay organized, track progress, and enjoy a seamless dormitory experience.
+              </p>
+              <button
+              className="btn btn-light btn-lg mt-3"
+              style={{
+              color: "#6a11cb",
+              fontWeight: "bold",
+              borderRadius: "5px",
+              }}
+              onClick={() => {
+              startTour();
+              setTimeout(() => {
+                document.querySelector('.btn-info').scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }, 300); // Adding a slight delay to ensure the tour starts before scrolling
+              }}
+              >
+              Get Started
+              </button>
+              </div>
+
+              {/* Feature Cards */}
+      <div className="row mt-5">
+        <div className="col-md-4">
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h5 className="card-title">Task Management</h5>
+              <p className="card-text">
+                Easily manage and track your dormitory tasks with our intuitive interface.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h5 className="card-title">Progress Tracking</h5>
+              <p className="card-text">
+                Monitor your progress and stay on top of your responsibilities.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h5 className="card-title">Seamless Experience</h5>
+              <p className="card-text">
+                Enjoy a smooth and hassle-free dormitory management experience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div className="d-flex justify-content-between align-items-center mb-3" style={{ paddingTop: '30px' }}>
+        <button className="btn btn-info"
+          style={{
+            backgroundColor: '#2575fc', // Gradient color
+            color: 'white',
+            borderRadius: '5px',
+            padding: '10px 20px',
+            fontSize: '16px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+            transition: 'background-color 0.3s ease, transform 0.3s ease',
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#6a11cb'} // Change color on hover
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#2575fc'} // Revert color on mouse out
+          onClick={moveToTargetTable}
           data-intro="Click to move completed tasks to the Completed section."
           data-step="1"
           data-position="left">
@@ -140,10 +197,10 @@ export default function Home() {
       <div className="dropdown-section mb-4 d-flex justify-content-center" style={{ gap: '200px' }}>
         <div style={{ flex: 1, maxWidth: '300px' }}>
           <label htmlFor="studentDropdown" style={{ color: "white" }}>Select Student:</label>
-          <select 
-            id="studentDropdown" 
-            className="form-select" 
-            value={selectedUser} 
+          <select
+            id="studentDropdown"
+            className="form-select"
+            value={selectedUser}
             onChange={handleUserChange}
             data-intro="Use this drowpdown to select a student. The tasks will be filtered based on the selected student."
             data-step="2"
@@ -156,13 +213,13 @@ export default function Home() {
             ))}
           </select>
         </div>
-      
+
 
         <div style={{ flex: 1, maxWidth: '300px' }}>
           <label htmlFor="taskDropdown" style={{ color: "white" }}>Select Task:</label>
-          <select 
-            id="taskDropdown" 
-            className="form-select" 
+          <select
+            id="taskDropdown"
+            className="form-select"
             value={selectedTask}
             onChange={handleTaskChange}
             data-intro="Use this drowpdown to select a task. The students tasks will be filtered based on the selected task."
@@ -172,7 +229,7 @@ export default function Home() {
             <option value="">-- Choose a Task --</option>
             {allUsers
               .filter((user) => user.username === selectedUser)
-              .flatMap((user) => user.tasks) 
+              .flatMap((user) => user.tasks)
               .map((task, index) => (
                 <option key={index} value={task}>
                   {task}
@@ -183,87 +240,87 @@ export default function Home() {
       </div>
 
       <div className="container-fluid py-5 px-3" style={{
-          background: "linear-gradient(to right, #6a11cb, #2575fc)",
-          minHeight: "100vh",
+        background: "linear-gradient(to right, #6a11cb, #2575fc)",
+        minHeight: "100vh",
       }}>
-      
-      <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
 
-      <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
-        <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
-          In-Progress
-        </h2>
-      <table className="table border shadow table-striped table-hover" style={{ tableLayout: 'fixed', width: '100%' }}>
-        <thead>
-          <tr
-            data-intro="These are the column headers. Each column gives important details about a student and their task."
-            data-step="4"
-            data-position="bottom"
-          >
-            <th>Username</th>
-            <th className="hide-on-mobile">Email</th>
-            <th>Task</th>
-            <th>Deadline</th>
-            <th className="hide-column-name"
-              data-intro="IMPORTANT**: This column shows the task status. Red (🔴) means 'In-Progress' and green (🟢) means 'Completed'."
-              data-step="5"
-              data-position="bottom"
-            >
-              Task Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {user 
-            .filter((u) => {
-              const matchesUser = !selectedUser || u.username.toString() === selectedUser;
-              const matchesTask = !selectedTask || u.tasks?.includes(selectedTask);
-              return matchesUser && matchesTask;
-            })
-            .map((user, index) => (
-              <tr key={index}>
-                <td>{user.username}</td>
-                <td className="hide-on-mobile">{user.email}</td>
-                <td>{user.tasks?.join(", ")}</td>
-                <td>{user.deadline}</td>
-                <td>
-                  <span className="circle red-circle" style={{ display: user.status === 'In-Progress' ? 'inline-block' : 'none' }}></span>
-                  <span className="circle green-circle" style={{ display: user.status === 'Completed' ? 'inline-block' : 'none' }}></span>
-                  <span className="status-text" style={{ color: user.status === 'In-Progress' ? 'red' : 'green' }}>
-                    {user.status}
-                  </span>
-                </td>
-                <td>
-                  <Link
-                    to={`/viewsampletask/sampleuser/${user.id}`}
-                    state={{ user }}
-                    className="btn btn-primary btn-sm view-button"
-                    data-intro="Click to view the details of the selected task."
-                    data-step="6"
-                    data-position="left"
-                  >
-                    View
-                  </Link>
-                  <button 
-                    className="btn btn-danger btn-sm mx-1 delete-button" 
-                    onClick={() => handleDelete(user.id)}
-                    data-intro="Guess what this button does? It deletes this row. Refresh the page to undo any changes you have made."
-                    data-step="7"
-                    data-position="left"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
 
-      <div className="p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
-        <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
-          Completed
-        </h2>
+          <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+            <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+              In-Progress
+            </h2>
+            <table className="table border shadow table-striped table-hover" style={{ tableLayout: 'fixed', width: '100%' }}>
+              <thead>
+                <tr
+                  data-intro="These are the column headers. Each column gives important details about a student and their task."
+                  data-step="4"
+                  data-position="bottom"
+                >
+                  <th>Username</th>
+                  <th className="hide-on-mobile">Email</th>
+                  <th>Task</th>
+                  <th>Deadline</th>
+                  <th className="hide-column-name"
+                    data-intro="IMPORTANT**: This column shows the task status. Red (🔴) means 'In-Progress' and green (🟢) means 'Completed'."
+                    data-step="5"
+                    data-position="bottom"
+                  >
+                    Task Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {user
+                  .filter((u) => {
+                    const matchesUser = !selectedUser || u.username.toString() === selectedUser;
+                    const matchesTask = !selectedTask || u.tasks?.includes(selectedTask);
+                    return matchesUser && matchesTask;
+                  })
+                  .map((user, index) => (
+                    <tr key={index}>
+                      <td>{user.username}</td>
+                      <td className="hide-on-mobile">{user.email}</td>
+                      <td>{user.tasks?.join(", ")}</td>
+                      <td>{user.deadline}</td>
+                      <td>
+                        <span className="circle red-circle" style={{ display: user.status === 'In-Progress' ? 'inline-block' : 'none' }}></span>
+                        <span className="circle green-circle" style={{ display: user.status === 'Completed' ? 'inline-block' : 'none' }}></span>
+                        <span className="status-text" style={{ color: user.status === 'In-Progress' ? 'red' : 'green' }}>
+                          {user.status}
+                        </span>
+                      </td>
+                      <td>
+                        <Link
+                          to={`/viewsampletask/sampleuser/${user.id}`}
+                          state={{ user }}
+                          className="btn btn-primary btn-sm view-button"
+                          data-intro="Click to view the details of the selected task."
+                          data-step="6"
+                          data-position="left"
+                        >
+                          View
+                        </Link>
+                        <button
+                          className="btn btn-danger btn-sm mx-1 delete-button"
+                          onClick={() => handleDelete(user.id)}
+                          data-intro="Guess what this button does? It deletes this row. Refresh the page to undo any changes you have made."
+                          data-step="7"
+                          data-position="left"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+            <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+              Completed
+            </h2>
             <table className="table border shadow table-striped table-hover" style={{ tableLayout: 'fixed', width: '100%' }}>
               <thead>
                 <tr>
@@ -283,32 +340,32 @@ export default function Home() {
                     return matchesUser && matchesTask;
                   })
                   .map((user, index) => (
-                  <tr key={index}>
-                    <td>{user.username}</td>
-                    <td className="hide-on-mobile">{user.email}</td>
-                    <td>{user.tasks?.join(", ")}</td>
-                    <td>{user.deadline}</td>
-                    <td>
-                      <span className="circle red-circle" style={{ display: user.status === 'In-Progress' ? 'inline-block' : 'none' }}></span>
-                      <span className="circle green-circle" style={{ display: user.status === 'Completed' ? 'inline-block' : 'none' }}></span>
-                      <span className="status-text" style={{ color: user.status === 'In-Progress' ? 'red' : 'green' }}>
-                        {user.status}
-                      </span>
-                    </td>
-                    <td>
-                      <Link
-                        to={`/viewsampletask/sampleuser/${user.id}`}
-                        state={{ user }}
-                        className="btn btn-primary btn-sm">
-                        View
-                      </Link>
-                      <button className="btn btn-danger btn-sm mx-1" 
-                      onClick={() => handleDelete(user.id)}
-                      >
-                        Delete</button>
-                    </td>
-                  </tr>
-                ))}
+                    <tr key={index}>
+                      <td>{user.username}</td>
+                      <td className="hide-on-mobile">{user.email}</td>
+                      <td>{user.tasks?.join(", ")}</td>
+                      <td>{user.deadline}</td>
+                      <td>
+                        <span className="circle red-circle" style={{ display: user.status === 'In-Progress' ? 'inline-block' : 'none' }}></span>
+                        <span className="circle green-circle" style={{ display: user.status === 'Completed' ? 'inline-block' : 'none' }}></span>
+                        <span className="status-text" style={{ color: user.status === 'In-Progress' ? 'red' : 'green' }}>
+                          {user.status}
+                        </span>
+                      </td>
+                      <td>
+                        <Link
+                          to={`/viewsampletask/sampleuser/${user.id}`}
+                          state={{ user }}
+                          className="btn btn-primary btn-sm">
+                          View
+                        </Link>
+                        <button className="btn btn-danger btn-sm mx-1"
+                          onClick={() => handleDelete(user.id)}
+                        >
+                          Delete</button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
