@@ -50,10 +50,13 @@ export default function ViewUserTask() {
             style={{
                 background: "linear-gradient(to right, #6a11cb, #2575fc)",
                 minHeight: "100vh",
+                marginTop: "60px",
+                paddingTop: "20px",
+        
             }}
         >
             <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
-                {/* Task Details */}
+                { /* Task Details */}
                 <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
                     <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
                         Task Assignment Details (ID: {id})
@@ -78,18 +81,6 @@ export default function ViewUserTask() {
                                     <b>Status:</b> {userTask.status ? "Completed" : "In-progress"}
                                 </li>
                             </ul>
-
-                            {/* Action Buttons */}
-                            <div className="d-flex justify-content-center mt-4">
-                                {userRole === "ADMIN" && (
-                                    <button
-                                        className="btn btn-outline-danger btn-sm"
-                                        onClick={() => console.log("Delete task logic here")}
-                                    >
-                                        <FaTrash /> Delete
-                                    </button>
-                                )}
-                            </div>
                         </div>
                     </div>
                 </div>
