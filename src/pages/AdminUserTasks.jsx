@@ -45,11 +45,11 @@ const AdminUserTasks = () => {
         } catch (error) {
             console.error("Error fetching privileged users:", error);
         }
-    };    
+    };
 
     useEffect(() => {
         fetchTasks();
-        fetchPrivilegedUsers(); 
+        fetchPrivilegedUsers();
     }, []);
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const AdminUserTasks = () => {
             .filter((task) => (selectedUser ? task.user.username === selectedUser : true))
             .filter((task) => (selectedDeadline ? task.deadline === selectedDeadline : true))
             .filter((task) => (selectedTaskName ? task.task.name === selectedTaskName : true));
-    
+
         setFilteredDeadlines([...new Set(filteredTasks.map((task) => task.deadline))]);
         setFilteredTaskNames([...new Set(filteredTasks.map((task) => task.task.name))]);
         //setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
@@ -70,32 +70,73 @@ const AdminUserTasks = () => {
             .filter((task) => (selectedTaskName ? task.task.name === selectedTaskName : true));
     };
 
-    const renderTable = (tasksToRender) => (
-        <table className="table table-bordered">
-            <thead>
-                <tr>
-                    <th>User Name</th>
-                    <th>Task</th>
-                    <th>Deadline</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {tasksToRender.map((task) => (
-                    <tr key={task.id}>
-                        <td>{task.user.username}</td>
-                        <td>{task.task.name}</td>
-                        <td>{task.deadline}</td>
-                        <td>
-                            <Link to={`/viewusertask/${task.id}`} className="btn btn-info btn-sm me-1">View</Link>
-                            <Link to={`/editusertask/${task.id}`} className="btn btn-warning btn-sm me-1">Edit</Link>
-                            <button className="btn btn-danger btn-sm" onClick={() => deleteTask(task.id)}>Delete</button>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    );
+    const renderTable = (tasksToRender) => {
+        return (
+            <div className="table-responsive d-none d-md-block">
+                <table className="table table-striped table-hover align-middle">
+                    <thead className="table-light">
+                        <tr>
+                            <th>User Name</th>
+                            <th>Task</th>
+                            <th>Deadline</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tasksToRender.length > 0 ? (
+                            tasksToRender.map((task) => (
+                                <tr key={task.id}>
+                                    <td>{task.user.username}</td>
+                                    <td>{task.task.name}</td>
+                                    <td>{task.deadline}</td>
+                                    <td>
+                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-info btn-sm me-1">View</Link>
+                                        <Link to={`/editusertask/${task.id}`} className="btn btn-warning btn-sm me-1">Edit</Link>
+                                        <button className="btn btn-danger btn-sm" onClick={() => deleteTask(task.id)}>Delete</button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4" className="text-center">No tasks found.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        );
+    };
+
+    const renderCard = (tasksToRender) => {
+        return (
+            <div className="row">
+                {tasksToRender.length > 0 ? (
+                    tasksToRender.map((task) => (
+                        <div key={task.id} className="col-12 col-md-6 col-lg-4 mb-3">
+                            <div className="card" style={{ borderColor: "#6a11cb" }}>
+                                <div className="card-body">
+                                    <h5 className="card-title">{task.task.name}</h5>
+                                    <h6 className="card-subtitle mb-2 text-muted">{task.user.username}</h6>
+                                    <p className="card-text">
+                                        <strong>Deadline:</strong> {task.deadline}
+                                    </p>
+                                    <div className="d-flex justify-content-between">
+                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-info btn-sm">View</Link>
+                                        <Link to={`/editusertask/${task.id}`} className="btn btn-warning btn-sm">Edit</Link>
+                                        <button className="btn btn-danger btn-sm" onClick={() => deleteTask(task.id)}>Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <div className="col-12">
+                        <p className="text-center">No tasks found.</p>
+                    </div>
+                )}
+            </div>
+        );
+    };
 
     const deleteTask = async (id) => {
         try {
@@ -107,45 +148,83 @@ const AdminUserTasks = () => {
     };
 
     return (
-        <div className="container mt-4">
-            <h1>Admin Task Dashboard</h1>
-            <div className="mb-4">
-                <label>Select User:</label>
-                <select className="form-select" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
-                    <option value="">-- All Users --</option>
-                    {users.map((user) => (
-                        <option key={user.username} value={user.username}>
-                            {user.name} ({user.username})
-                        </option>
-                    ))}
-                </select>
+        <div className="container-fluid py-5 px-3" style={{
+            background: "linear-gradient(to right, #6a11cb, #2575fc)",
+            minHeight: "100vh",
+            paddingTop: "50px"
+        }}>
+            <div className="text-center mb-4">
+                <h1 className="mb-4" style={{
+                    fontWeight: "bold",
+                    color: "rgba(255, 255, 255, 0.85)",
+                    marginTop: "50px"
+                }}>Admin Task Dashboard</h1>
             </div>
-            <div className="mb-4">
-                <label>Select Deadline:</label>
-                <select className="form-select" value={selectedDeadline} onChange={(e) => setSelectedDeadline(e.target.value)}>
-                    <option value="">-- All Deadlines --</option>
-                    {filteredDeadlines.map((deadline) => (
-                        <option key={deadline} value={deadline}>{deadline}</option>
-                    ))}
-                </select>
+
+            <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4 my-3">
+                <div className="d-flex justify-content-center mb-4">
+                    <div className="mx-2 w-50">
+                        <label>Select User:</label>
+                        <select className="form-select custom-select" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)}>
+                            <option value="">-- All Users --</option>
+                            {users.map((user) => (
+                                <option key={user.username} value={user.username}>
+                                    {user.name} ({user.username})
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mx-2 w-50">
+                        <label>Select Deadline:</label>
+                        <select className="form-select custom-select" value={selectedDeadline} onChange={(e) => setSelectedDeadline(e.target.value)}>
+                            <option value="">-- All Deadlines --</option>
+                            {filteredDeadlines.map((deadline) => (
+                                <option key={deadline} value={deadline}>{deadline}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+
+                <div className="mb-1">
+                    <label>Select Task:</label>
+                    <select className="form-select custom-select" value={selectedTaskName} onChange={(e) => setSelectedTaskName(e.target.value)}>
+                        <option value="">-- All Tasks --</option>
+                        {filteredTaskNames.map((name) => (
+                            <option key={name} value={name}>{name}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
-            <div className="mb-4">
-                <label>Select Task:</label>
-                <select className="form-select" value={selectedTaskName} onChange={(e) => setSelectedTaskName(e.target.value)}>
-                    <option value="">-- All Tasks --</option>
-                    {filteredTaskNames.map((name) => (
-                        <option key={name} value={name}>{name}</option>
-                    ))}
-                </select>
+
+            <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-3 my-3">
+                <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+                    <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+                        In-Progress User Tasks
+                    </h2>
+                    {/* Table for Desktop view */}
+                    <div className="d-none d-md-block">
+                        {filterTasks(inProgressTasks).length ? renderTable(filterTasks(inProgressTasks)) : <p className="text-center">No tasks found.</p>}
+                    </div>
+                    {/* Cards for Mobile view */}
+                    <div className="d-md-none">
+                        {filterTasks(inProgressTasks).length ? renderCard(filterTasks(inProgressTasks)) : <p className="text-center">No tasks found.</p>}
+                    </div>
+                </div>
+                <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+                    <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+                        Completed User Tasks
+                    </h2>
+                    {/* Table for Desktop view */}
+                    <div className="d-none d-md-block">
+                        {filterTasks(completedTasks).length ? renderTable(filterTasks(completedTasks)) : <p className="text-center">No tasks found.</p>}
+                    </div>
+                    {/* Cards for Mobile view */}
+                    <div className="d-md-none">
+                        {filterTasks(completedTasks).length ? renderCard(filterTasks(completedTasks)) : <p className="text-center">No tasks found.</p>}
+                    </div>
+                </div>
             </div>
-            <div className="mb-5">
-                <h2>In-progress Tasks</h2>
-                {filterTasks(inProgressTasks).length ? renderTable(filterTasks(inProgressTasks)) : <p>No tasks found.</p>}
-            </div>
-            <div>
-                <h2>Completed Tasks</h2>
-                {filterTasks(completedTasks).length ? renderTable(filterTasks(completedTasks)) : <p>No tasks found.</p>}
-            </div>
+
         </div>
     );
 };

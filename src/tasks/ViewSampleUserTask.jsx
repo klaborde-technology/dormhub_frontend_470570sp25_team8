@@ -25,19 +25,38 @@ export default function ViewSampleUserTask() {
   }
 
   return (
-    <div className="container mt-5" style={{ paddingTop: '40px' }}>
-      <h2>Sample Task Details</h2>
-      <p><strong>Username:</strong> {user.username}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Tasks:</strong> {user.tasks.join(', ')}</p>
-      <p><strong>Deadline:</strong> {user.deadline}</p>
-      <p><strong>Status:</strong> {user.status}</p>
-      <button
-      classname="btn btn-primary my-2"
-      onClick={() => navigate("/")}
-      >
-        Return To Dashboard
-      </button>
+    <div className="custom-container" style={{paddingTop: '100px'}}>
+      <div className="row">
+        <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
+          <h2 className="text-center m-4">Sample Task Details</h2>
+          <div className="card">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">
+                <b>Name:</b> {user.username}
+              </li>
+              <li className="list-group-item">
+                <b>Email:</b> {user.email}
+              </li>
+              <li className="list-group-item">
+                <b>Tasks:</b> {user.tasks.join(', ')}
+              </li>
+              <li className="list-group-item">
+                <b>Deadline:</b> {user.deadline}
+              </li>
+              <li className="list-group-item">
+                <b>Status:</b> {user.status}
+              </li>
+            </ul>
+          </div>
+          <button
+            className="btn btn-primary my-2"
+            onClick={() => navigate("/")}
+          >
+            Return To Dashboard
+          </button>
+        </div>
+      </div>
     </div>
   );
+  
 }
