@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import AuthService from "../auth/AuthService";
-import { API_BASE_URL } from '../api';
+import { API_BASE_URL } from "../api";
+import { FaCheckCircle, FaRegCircle, FaTrash } from "react-icons/fa";
 
 export default function ViewUserTask() {
     const [userTask, setUserTask] = useState({
@@ -15,6 +16,7 @@ export default function ViewUserTask() {
     const { id } = useParams();
     const navigate = useNavigate();
     const userId = AuthService.getUserId();
+    const userRole = AuthService.getUserRole();
 
     useEffect(() => {
         loadUserTask();
@@ -33,12 +35,9 @@ export default function ViewUserTask() {
     };
 
     const handleBack = () => {
-        const role = AuthService.getUserRole();
-        const userId = AuthService.getUserId();
-
-        if (role === "ADMIN") {
+        if (userRole === "ADMIN") {
             navigate("/admintasks");
-        } else if (role === "PRIVILEGED_USER") {
+        } else if (userRole === "PRIVILEGED_USER") {
             navigate(`/usertasks/user/${userId}`);
         } else {
             navigate("/");
@@ -46,34 +45,58 @@ export default function ViewUserTask() {
     };
 
     return (
-        <div className="custom-container">
-            <div className="row">
-                <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">User Task Details</h2>
-                    <div className="card">
-                        <div className="card-header">Details of Task Assignment (ID: {id})</div>
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item">
-                                <b>Name:</b> {userTask.user && userTask.user.name}
-                            </li>
-                            <li className="list-group-item">
-                                <b>Username:</b> {userTask.user && userTask.user.username}
-                            </li>
-                            <li className="list-group-item">
-                                <b>Email:</b> {userTask.user && userTask.user.email}
-                            </li>
-                            <li className="list-group-item">
-                                <b>Task:</b> {userTask.task && userTask.task.name}
-                            </li>
-                            <li className="list-group-item">
-                                <b>Deadline:</b> {userTask.deadline}
-                            </li>
-                            <li className="list-group-item">
-                                <b>Status:</b> {userTask.status ? "Completed" : "In-progress"}
-                            </li>
-                        </ul>
+        <div
+            className="container-fluid py-5 px-3"
+            style={{
+                background: "linear-gradient(to right, #6a11cb, #2575fc)",
+                minHeight: "100vh",
+            }}
+        >
+            <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
+                {/* Task Details */}
+                <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
+                    <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
+                        Task Assignment Details (ID: {id})
+                    </h2>
+                    <div className="card shadow-lg border-0 rounded-4">
+                        <div className="card-body">
+                            <h5 className="card-title text-center"><strong>Name:</strong> {userTask.user?.name}</h5>
+                            <ul className="list-group list-group-flush">
+                                <li className="list-group-item text-center">
+                                    <b>Username:</b> {userTask.user?.username}
+                                </li>
+                                <li className="list-group-item text-center">
+                                    <b>Email:</b> {userTask.user?.email}
+                                </li>
+                                <li className="list-group-item text-center">
+                                    <b>Task:</b> {userTask.task?.name}
+                                </li>
+                                <li className="list-group-item text-center">
+                                    <b>Deadline:</b> {userTask.deadline}
+                                </li>
+                                <li className="list-group-item text-center">
+                                    <b>Status:</b> {userTask.status ? "Completed" : "In-progress"}
+                                </li>
+                            </ul>
+
+                            {/* Action Buttons */}
+                            <div className="d-flex justify-content-center mt-4">
+                                {userRole === "ADMIN" && (
+                                    <button
+                                        className="btn btn-outline-danger btn-sm"
+                                        onClick={() => console.log("Delete task logic here")}
+                                    >
+                                        <FaTrash /> Delete
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    <button className="btn btn-primary my-2" onClick={handleBack}>
+                </div>
+
+                {/* Back Button */}
+                <div className="d-flex justify-content-center mt-4">
+                    <button className="btn btn-secondary" onClick={handleBack}>
                         Return to Dashboard
                     </button>
                 </div>
