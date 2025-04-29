@@ -125,6 +125,14 @@ export default function Home() {
               fontWeight: "bold",
               borderRadius: "5px",
               }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "scale(1.05)";
+                e.currentTarget.style.boxShadow = "0 12px 25px rgba(0, 0, 0, 0.4)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.3)";
+              }}
               onClick={() => {
               startTour();
               setTimeout(() => {
@@ -136,35 +144,41 @@ export default function Home() {
               </button>
               </div>
 
-              {/* Feature Cards */}
-      <div className="row mt-5">
+                {/* Feature Cards */}
+        <div className="row mt-5">
+          <div className="col-md-4">
+            <div className="card-wrapper">
+              <div className="card shadow-sm">
+                <div className="card-body text-center">
+                  <h5 className="card-title">Task Management</h5>
+                  <p className="card-text">
+                    Easily manage and track your dormitory tasks with our intuitive interface.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         <div className="col-md-4">
-          <div className="card shadow-sm">
-            <div className="card-body text-center">
-              <h5 className="card-title">Task Management</h5>
-              <p className="card-text">
-                Easily manage and track your dormitory tasks with our intuitive interface.
-              </p>
+          <div className="card-wrapper">
+            <div className="card shadow-sm">
+              <div className="card-body text-center">
+                <h5 className="card-title">Progress Tracking</h5>
+                <p className="card-text">
+                  Monitor your progress and stay on top of your responsibilities.
+                </p>
+              </div>
             </div>
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card shadow-sm">
-            <div className="card-body text-center">
-              <h5 className="card-title">Progress Tracking</h5>
-              <p className="card-text">
-                Monitor your progress and stay on top of your responsibilities.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="card shadow-sm">
-            <div className="card-body text-center">
-              <h5 className="card-title">Seamless Experience</h5>
-              <p className="card-text">
-                Enjoy a smooth and hassle-free dormitory management experience.
-              </p>
+          <div className="card-wrapper">
+            <div className="card shadow-sm">
+              <div className="card-body text-center">
+                <h5 className="card-title">Seamless Experience</h5>
+                <p className="card-text">
+                  Enjoy a smooth and hassle-free dormitory management experience.
+                </p>
+              </div>
             </div>
           </div>
         </div>
