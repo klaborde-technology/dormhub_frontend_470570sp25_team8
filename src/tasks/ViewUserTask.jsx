@@ -52,10 +52,13 @@ export default function ViewUserTask() {
                 minHeight: "100vh",
                 marginTop: "60px",
                 paddingTop: "20px",
-        
+
             }}
         >
             <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
+                <div className="text-center mb-5">
+                    <h2 className="fw-bold text-primary-emphasis">User Task Details</h2>
+                </div>
                 { /* Task Details */}
                 <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
                     <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
@@ -78,7 +81,10 @@ export default function ViewUserTask() {
                                     <b>Deadline:</b> {userTask.deadline}
                                 </li>
                                 <li className="list-group-item text-center">
-                                    <b>Status:</b> {userTask.status ? "Completed" : "In-progress"}
+                                    <b>Status: </b>
+                                    <span className={`badge ${userTask.status ? "bg-success" : "bg-warning text-dark"}`}>
+                                        {userTask.status ? "Completed" : "In-progress"}
+                                    </span>
                                 </li>
                             </ul>
                         </div>
