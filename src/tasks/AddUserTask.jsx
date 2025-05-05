@@ -65,73 +65,117 @@ export default function AddUserTask() {
     };
 
     return (
-        <div className="custom-container" style={{ paddingTop: "30px", marginTop: "20px"}}>
-            <div className="row">
-                <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">Assign Task to User</h2>
-                    <form onSubmit={onSubmit}>
-                        <div className="mb-3">
-                            <label htmlFor="User" className="form-label">Select User</label>
-                            <select
-                                className="form-select"
-                                name="userId"
-                                value={userId}
-                                onChange={onInputChange}
-                                required
-                            >
-                                <option value="">Choose a User</option>
-
-                                {users.map((user) => (
-                                    <option key={user.id} value={user.id}>
-                                        {user.name} ({user.username})
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="Task" className="form-label">Select Task</label>
-                            <select
-                                className="form-select"
-                                name="taskId"
-                                value={taskId}
-                                onChange={onInputChange}
-                                required
-                            >
-                                <option value="">Choose a Task</option>
-                                {tasks.map((task) => (
-                                    <option key={task.id} value={task.id}>
-                                        {task.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="Deadline" className="form-label">Deadline</label>
-                            <input
-                                type="date"
-                                className="form-control"
-                                name="deadline"
-                                value={deadline}
-                                onChange={onInputChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="Status" className="form-label">Status</label>
-                            <select
-                                className="form-select"
-                                name="status"
-                                value={status}
-                                onChange={onInputChange}
-                                disabled // Only one option ("In-progress")
-                            >
-                                <option value="In-progress">In-progress</option>
-                            </select>
-                        </div>
-                        <button type="submit" className="btn btn-outline-primary">Submit</button>
-                        <Link className="btn btn-outline-danger mx-2" to="/admintasks">Cancel</Link>
-                    </form>
+        <div
+            className="container-fluid d-flex justify-content-center align-items-center vh-100"
+            style={{
+                background: "linear-gradient(to right, #d9a7c7, #fffcdc)",
+            }}
+        >
+            <div
+                className="card shadow p-4 w-100"
+                style={{
+                    maxWidth: "420px",
+                    borderRadius: "16px",
+                    backgroundColor: "#ffffffdd",
+                    backdropFilter: "blur(6px)"
+                }}
+            >
+                <div className="text-center mb-1">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/512/1734/1734797.png"
+                        alt="Clipboard Icon"
+                        width="95"
+                        className="mb-1"
+                    />
+                    <h3 className="text-purple fw-bold mt-1" style={{ color: "#6f42c1" }}>
+                        Assign Task to User
+                    </h3>
                 </div>
+
+
+                <form onSubmit={onSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="User" className="form-label">Select User</label>
+                        <select
+                            className="form-select"
+                            name="userId"
+                            value={userId}
+                            onChange={onInputChange}
+                            required
+                        >
+                            <option value="">Choose a User</option>
+
+                            {users.map((user) => (
+                                <option key={user.id} value={user.id}>
+                                    {user.name} ({user.username})
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="Task" className="form-label">Select Task</label>
+                        <select
+                            className="form-select"
+                            name="taskId"
+                            value={taskId}
+                            onChange={onInputChange}
+                            required
+                        >
+                            <option value="">Choose a Task</option>
+                            {tasks.map((task) => (
+                                <option key={task.id} value={task.id}>
+                                    {task.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="Deadline" className="form-label">Deadline</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            name="deadline"
+                            value={deadline}
+                            onChange={onInputChange}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="Status" className="form-label">Status</label>
+                        <select
+                            className="form-select"
+                            name="status"
+                            value={status}
+                            onChange={onInputChange}
+                            disabled // Only one option ("In-progress")
+                        >
+                            <option value="In-progress">In-progress</option>
+                        </select>
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn w-100 rounded-3 d-flex justify-content-center align-items-center gap-2"
+                        style={{
+                            backgroundColor: "#6f42c1",
+                            borderColor: "#6f42c1",
+                            color: "#fff",
+                        }}
+                    >
+                        Submit
+                    </button>
+
+                    <Link
+                        to="/admintasks"
+                        className="btn w-100 rounded-3 mt-2 d-flex justify-content-center align-items-center gap-2"
+                        style={{
+                            backgroundColor: "#dc3545",
+                            borderColor: "#dc3545",
+                            color: "#fff",
+                        }}
+                    >
+                        Cancel
+                    </Link>
+                </form>
             </div>
         </div>
     );
