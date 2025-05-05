@@ -79,12 +79,12 @@ function Register({ registrationType = "guest" }) {
                     backdropFilter: "blur(6px)",
                 }}
             >
-                <div className="text-center mb-4">
+                <div className="text-center mb-0">
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/747/747545.png"
                         alt="Register Icon"
-                        width="64"
-                        className="mb-2"
+                        width="75"
+                        className="mb-0"
                     />
                     <h3 className="text-purple fw-bold" style={{ color: "#6f42c1" }}>
                         {registrationType === "guest"
