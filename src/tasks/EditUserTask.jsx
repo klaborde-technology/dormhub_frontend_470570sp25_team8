@@ -55,13 +55,24 @@ export default function EditUserTask() {
     };
 
     return (
-        <div className="custom-container">
-            <div className="row">
-                <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">Edit Task</h2>
+        <div
+            className="container-fluid py-5 px-3"
+            style={{
+                background: "linear-gradient(to right, #6a11cb, #2575fc)",
+                minHeight: "100vh",
+                marginTop: "60px",
+                paddingTop: "20px",
+            }}
+        >
+            <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
+                <div className="text-center mb-5">
+                    <h2 className="fw-bold text-primary-emphasis">Edit User Task</h2>
+                </div>
+
+                <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
                     <form onSubmit={onSubmit}>
-                        <div className="mb-3">
-                            <label htmlFor="deadline" className="form-label">
+                        <div className="mb-4">
+                            <label htmlFor="deadline" className="form-label fw-semibold">
                                 Deadline
                             </label>
                             <input
@@ -73,8 +84,9 @@ export default function EditUserTask() {
                                 required
                             />
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="status" className="form-label">
+
+                        <div className="mb-4">
+                            <label htmlFor="status" className="form-label fw-semibold">
                                 Status
                             </label>
                             <select
@@ -88,12 +100,15 @@ export default function EditUserTask() {
                                 <option value="true">Completed</option>
                             </select>
                         </div>
-                        <button type="submit" className="btn btn-outline-primary">
-                            Submit
-                        </button>
-                        <Link className="btn btn-outline-danger mx-2" to="/admintasks">
-                            Cancel
-                        </Link>
+
+                        <div className="d-flex justify-content-center gap-3">
+                            <button type="submit" className="btn btn-primary px-4">
+                                Update
+                            </button>
+                            <Link to="/admintasks" className="btn btn-danger px-4">
+                                Cancel
+                            </Link>
+                        </div>
                     </form>
                 </div>
             </div>
