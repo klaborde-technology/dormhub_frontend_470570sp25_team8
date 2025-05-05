@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import AuthService from "../auth/AuthService";
 import { API_BASE_URL } from '../api';
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 const AdminUserTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -121,9 +122,15 @@ const AdminUserTasks = () => {
                                         <strong>Deadline:</strong> {task.deadline}
                                     </p>
                                     <div className="d-flex justify-content-between">
-                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-info btn-sm">View</Link>
-                                        <Link to={`/editusertask/${task.id}`} className="btn btn-warning btn-sm">Edit</Link>
-                                        <button className="btn btn-danger btn-sm" onClick={() => deleteTask(task.id)}>Delete</button>
+                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-outline-primary btn-sm">
+                                            <FaEye />
+                                        </Link>
+                                        <Link to={`/editusertask/${task.id}`} className="btn btn-outline-warning btn-sm">
+                                            <FaEdit />
+                                        </Link>
+                                        <button className="btn btn-outline-danger btn-sm" onClick={() => deleteTask(task.id)}>
+                                            <FaTrash />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
