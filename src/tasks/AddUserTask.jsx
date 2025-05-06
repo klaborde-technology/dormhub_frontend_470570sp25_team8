@@ -66,9 +66,12 @@ export default function AddUserTask() {
 
     return (
         <div
-            className="container-fluid d-flex justify-content-center align-items-center vh-100"
+            className="container-fluid d-flex justify-content-center"
             style={{
                 background: "linear-gradient(to right, #d9a7c7, #fffcdc)",
+                minHeight: "100vh",
+                paddingTop: "80px",
+                paddingBottom: "20px",
             }}
         >
             <div
