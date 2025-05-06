@@ -146,6 +146,10 @@ const AdminUserTasks = () => {
     };
 
     const deleteTask = async (id) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete the assigned task?");
+
+        if (!isConfirmed) return; // If user clicks "No", exit the function
+
         try {
             await axios.delete(`${API_BASE_URL}/usertask/${id}`, { headers: AuthService.getAuthHeader() });
             fetchTasks();
