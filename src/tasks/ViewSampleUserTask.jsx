@@ -6,11 +6,8 @@ export default function ViewSampleUserTask() {
   const location = useLocation();
   const navigate = useNavigate();
   const numericId = parseInt(id, 10);
-
-  // Try to get user from navigation state
   const userFromState = location.state?.user;
 
-  // Static fallback data
   const sampleUsers = [
     { id: 1, username: 'JohnDoe', email: 'john@example.com', tasks: ['Schedule Move-Out Appointment'], deadline: '2025-04-03', status: 'In-Progress' },
     { id: 2, username: 'JaneSmith', email: 'jane@example.com', tasks: ['Clean Bathroom'], deadline: '2025-04-05', status: 'Completed' },

@@ -16,7 +16,6 @@ const AdminUserTasks = () => {
     const [selectedDeadline, setSelectedDeadline] = useState("");
     const [selectedTaskName, setSelectedTaskName] = useState("");
 
-    // Fetch tasks and process metadata
     const fetchTasks = async () => {
         try {
             const inProgressResponse = await axios.get(
@@ -31,7 +30,6 @@ const AdminUserTasks = () => {
             setTasks(combinedTasks);
             setInProgressTasks(inProgressResponse.data);
             setCompletedTasks(completedResponse.data);
-            //setUsers([...new Set(combinedTasks.map((task) => task.user.username))]);
         } catch (error) {
             console.error("Error fetching tasks:", error);
         }
@@ -61,7 +59,6 @@ const AdminUserTasks = () => {
 
         setFilteredDeadlines([...new Set(filteredTasks.map((task) => task.deadline))]);
         setFilteredTaskNames([...new Set(filteredTasks.map((task) => task.task.name))]);
-        //setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
     }, [selectedUser, selectedDeadline, selectedTaskName, tasks]);
 
     const filterTasks = (tasksToFilter) => {
@@ -148,7 +145,7 @@ const AdminUserTasks = () => {
     const deleteTask = async (id) => {
         const isConfirmed = window.confirm("Are you sure you want to delete the assigned task?");
 
-        if (!isConfirmed) return; // If user clicks "No", exit the function
+        if (!isConfirmed) return;
 
         try {
             await axios.delete(`${API_BASE_URL}/usertask/${id}`, { headers: AuthService.getAuthHeader() });

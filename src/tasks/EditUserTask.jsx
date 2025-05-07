@@ -9,10 +9,9 @@ export default function EditUserTask() {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    // Local state only for deadline and status
     const [task, setTask] = useState({
         deadline: "",
-        status: "false", // will use string value; later convert to boolean
+        status: "false",
     });
 
     const onInputChange = (e) => {
@@ -28,10 +27,9 @@ export default function EditUserTask() {
             const result = await axios.get(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
-            // Assuming result.data contains fields: deadline and status
             setTask({
                 deadline: result.data.deadline,
-                status: result.data.status.toString(), // convert boolean to string for the select
+                status: result.data.status.toString(),
             });
         } catch (error) {
             console.error("Error loading user task:", error);
@@ -43,12 +41,12 @@ export default function EditUserTask() {
         try {
             const payload = {
                 deadline: task.deadline,
-                status: task.status === "true", // convert back to boolean
+                status: task.status === "true",
             };
             await axios.put(`${API_BASE_URL}/usertask/${id}`, payload, {
                 headers: AuthService.getAuthHeader(),
             });
-            navigate("/admintasks"); // Return to the dashboard after update
+            navigate("/admintasks");
         } catch (error) {
             console.error("Error updating task:", error);
         }

@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../auth/AuthService"; // Import AuthService
-import { API_BASE_URL } from "../api"; // Adjust the API base URL accordingly
+import AuthService from "../auth/AuthService";
+import { API_BASE_URL } from "../api";
 
 
 export default function AddTask() {
     const navigate = useNavigate();
-
-    // State to store task name
     const [task, setTask] = useState({ name: "" });
     const { name } = task;
 
@@ -22,10 +20,10 @@ export default function AddTask() {
             await axios.post(`${API_BASE_URL}/task`, task, {
                 headers: {
                     ...AuthService.getAuthHeader(),
-                    "Content-Type": "application/json", // Explicit content type
+                    "Content-Type": "application/json",
                 },
             });
-            navigate("/admintasks"); // Redirect to tasks list
+            navigate("/admintasks");
         } catch (error) {
             console.error("Error adding task:", error);
         }

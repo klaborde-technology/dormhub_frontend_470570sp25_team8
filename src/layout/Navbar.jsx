@@ -7,7 +7,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const isAuthenticated = AuthService.isAuthenticated();
-  const username = AuthService.getUsername(); // uses getUsername we added earlier
+  const username = AuthService.getUsername();
   const userRole = AuthService.getUserRole();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
