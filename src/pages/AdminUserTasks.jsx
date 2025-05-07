@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import AuthService from "../auth/AuthService";
 import { API_BASE_URL } from '../api';
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 const AdminUserTasks = () => {
     const [tasks, setTasks] = useState([]);
@@ -15,7 +16,6 @@ const AdminUserTasks = () => {
     const [selectedDeadline, setSelectedDeadline] = useState("");
     const [selectedTaskName, setSelectedTaskName] = useState("");
 
-    // Fetch tasks and process metadata
     const fetchTasks = async () => {
         try {
             const inProgressResponse = await axios.get(
@@ -30,7 +30,6 @@ const AdminUserTasks = () => {
             setTasks(combinedTasks);
             setInProgressTasks(inProgressResponse.data);
             setCompletedTasks(completedResponse.data);
-            //setUsers([...new Set(combinedTasks.map((task) => task.user.username))]);
         } catch (error) {
             console.error("Error fetching tasks:", error);
         }
@@ -60,7 +59,6 @@ const AdminUserTasks = () => {
 
         setFilteredDeadlines([...new Set(filteredTasks.map((task) => task.deadline))]);
         setFilteredTaskNames([...new Set(filteredTasks.map((task) => task.task.name))]);
-        //setUsers([...new Set(filteredTasks.map((task) => task.user.username))]); // Dynamically update users
     }, [selectedUser, selectedDeadline, selectedTaskName, tasks]);
 
     const filterTasks = (tasksToFilter) => {
@@ -121,9 +119,15 @@ const AdminUserTasks = () => {
                                         <strong>Deadline:</strong> {task.deadline}
                                     </p>
                                     <div className="d-flex justify-content-between">
-                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-info btn-sm">View</Link>
-                                        <Link to={`/editusertask/${task.id}`} className="btn btn-warning btn-sm">Edit</Link>
-                                        <button className="btn btn-danger btn-sm" onClick={() => deleteTask(task.id)}>Delete</button>
+                                        <Link to={`/viewusertask/${task.id}`} className="btn btn-outline-primary btn-sm">
+                                            <FaEye />
+                                        </Link>
+                                        <Link to={`/editusertask/${task.id}`} className="btn btn-outline-warning btn-sm">
+                                            <FaEdit />
+                                        </Link>
+                                        <button className="btn btn-outline-danger btn-sm" onClick={() => deleteTask(task.id)}>
+                                            <FaTrash />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -139,6 +143,10 @@ const AdminUserTasks = () => {
     };
 
     const deleteTask = async (id) => {
+        const isConfirmed = window.confirm("Are you sure you want to delete the assigned task?");
+
+        if (!isConfirmed) return;
+
         try {
             await axios.delete(`${API_BASE_URL}/usertask/${id}`, { headers: AuthService.getAuthHeader() });
             fetchTasks();

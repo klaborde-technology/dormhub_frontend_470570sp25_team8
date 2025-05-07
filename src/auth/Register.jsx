@@ -21,29 +21,25 @@ function Register({ registrationType = "guest" }) {
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
-    const [role] = useState(defaultRole); // Fixed role; no setter needed
+    const [role] = useState(defaultRole);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Toggle password visibility
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    // Handle registration form submission
     const handleRegister = async (e) => {
         e.preventDefault();
         setMessage("");
         setLoading(true);
 
         try {
-            // Call your AuthService.register function with the fixed role
             const response = await AuthService.register(name, username, email, role, password);
 
             if (response) {
                 setMessage("✅ Registration successful! Redirecting...");
                 if (registrationType === "guest") {
-                    // After guest registration (creating an admin account), redirect to login
                     setTimeout(() => navigate("/login"), 1500);
                 } else {
                     setTimeout(() => navigate("/admintasks"), 1500);
@@ -65,9 +61,12 @@ function Register({ registrationType = "guest" }) {
 
     return (
         <div
-            className="container-fluid d-flex justify-content-center align-items-center vh-100"
+            className="container-fluid d-flex justify-content-center"
             style={{
                 background: "linear-gradient(to right, #d9a7c7, #fffcdc)",
+                minHeight: "100vh",
+                paddingTop: "80px",
+                paddingBottom: "20px",
             }}
         >
             <div
@@ -79,12 +78,12 @@ function Register({ registrationType = "guest" }) {
                     backdropFilter: "blur(6px)",
                 }}
             >
-                <div className="text-center mb-4">
+                <div className="text-center mb-0">
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/747/747545.png"
                         alt="Register Icon"
-                        width="64"
-                        className="mb-2"
+                        width="75"
+                        className="mb-0"
                     />
                     <h3 className="text-purple fw-bold" style={{ color: "#6f42c1" }}>
                         {registrationType === "guest"

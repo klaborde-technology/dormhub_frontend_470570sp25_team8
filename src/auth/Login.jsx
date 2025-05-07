@@ -57,7 +57,7 @@ function Login() {
         <div
             className="container-fluid d-flex justify-content-center align-items-center vh-100"
             style={{
-                background: "linear-gradient(to right, #d9a7c7, #fffcdc)", // Matching purple-pink gradient
+                background: "linear-gradient(to right, #d9a7c7, #fffcdc)",
             }}
         >
             <div

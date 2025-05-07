@@ -6,11 +6,19 @@ export default function LogoutSuccess() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate("/"); // Redirects to home page after 3 seconds
-        }, 3000);
+            navigate("/");
+        }, 4400);
 
-        return () => clearTimeout(timer); // Cleanup function
+        return () => clearTimeout(timer);
     }, [navigate]);
+
+    const splitText = (text) => {
+        return text.split("").map((letter, index) => (
+            <span key={index} style={{ animationDelay: `${index * 0.1}s` }}>
+                {letter}
+            </span>
+        ));
+    };
 
     return (
         <div
@@ -29,8 +37,8 @@ export default function LogoutSuccess() {
                     backdropFilter: "blur(6px)",
                 }}
             >
-                <h2 className="fw-bold mb-3" style={{ color: "#6f42c1" }}>You have been logged out</h2>
-                <p className="text-muted">Redirecting to the home page...</p>
+                <h2 className="logout-header color-change fw-bold mb-3">{splitText("You have been logged out")}</h2>
+                <p className="logout-message color-change text-muted">{splitText("Redirecting to the home page...")}</p>
             </div>
         </div>
     );

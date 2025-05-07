@@ -9,10 +9,9 @@ export default function EditUserTask() {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    // Local state only for deadline and status
     const [task, setTask] = useState({
         deadline: "",
-        status: "false", // will use string value; later convert to boolean
+        status: "false",
     });
 
     const onInputChange = (e) => {
@@ -28,10 +27,9 @@ export default function EditUserTask() {
             const result = await axios.get(`${API_BASE_URL}/usertask/${id}`, {
                 headers: AuthService.getAuthHeader(),
             });
-            // Assuming result.data contains fields: deadline and status
             setTask({
                 deadline: result.data.deadline,
-                status: result.data.status.toString(), // convert boolean to string for the select
+                status: result.data.status.toString(),
             });
         } catch (error) {
             console.error("Error loading user task:", error);
@@ -43,25 +41,36 @@ export default function EditUserTask() {
         try {
             const payload = {
                 deadline: task.deadline,
-                status: task.status === "true", // convert back to boolean
+                status: task.status === "true",
             };
             await axios.put(`${API_BASE_URL}/usertask/${id}`, payload, {
                 headers: AuthService.getAuthHeader(),
             });
-            navigate("/admintasks"); // Return to the dashboard after update
+            navigate("/admintasks");
         } catch (error) {
             console.error("Error updating task:", error);
         }
     };
 
     return (
-        <div className="custom-container">
-            <div className="row">
-                <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">Edit Task</h2>
+        <div
+            className="container-fluid py-5 px-3"
+            style={{
+                background: "linear-gradient(to right, #6a11cb, #2575fc)",
+                minHeight: "100vh",
+                marginTop: "60px",
+                paddingTop: "20px",
+            }}
+        >
+            <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
+                <div className="text-center mb-5">
+                    <h2 className="fw-bold text-primary-emphasis">Edit User Task</h2>
+                </div>
+
+                <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
                     <form onSubmit={onSubmit}>
-                        <div className="mb-3">
-                            <label htmlFor="deadline" className="form-label">
+                        <div className="mb-4">
+                            <label htmlFor="deadline" className="form-label fw-semibold">
                                 Deadline
                             </label>
                             <input
@@ -73,8 +82,9 @@ export default function EditUserTask() {
                                 required
                             />
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="status" className="form-label">
+
+                        <div className="mb-4">
+                            <label htmlFor="status" className="form-label fw-semibold">
                                 Status
                             </label>
                             <select
@@ -88,12 +98,15 @@ export default function EditUserTask() {
                                 <option value="true">Completed</option>
                             </select>
                         </div>
-                        <button type="submit" className="btn btn-outline-primary">
-                            Submit
-                        </button>
-                        <Link className="btn btn-outline-danger mx-2" to="/admintasks">
-                            Cancel
-                        </Link>
+
+                        <div className="d-flex justify-content-center gap-3">
+                            <button type="submit" className="btn btn-primary px-4">
+                                Update
+                            </button>
+                            <Link to="/admintasks" className="btn btn-danger px-4">
+                                Cancel
+                            </Link>
+                        </div>
                     </form>
                 </div>
             </div>

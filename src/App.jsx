@@ -98,6 +98,7 @@ function App() {
           path="/edituser/:id"
           element={<ProtectedRoute element={<EditUser />} requiredRoles={["ADMIN"]} />}
         />
+
         <Route
           path="/edittask/:id"
           element={<ProtectedRoute element={<EditTask />} requiredRoles={["ADMIN", "PRIVILEGED_USER"]} />}
@@ -120,10 +121,12 @@ function App() {
           path="/addusertask"
           element={<ProtectedRoute element={<AddUserTask />} requiredRoles={["ADMIN"]} />}
         />
+
         <Route
           path="/editusertask/:id"
           element={<ProtectedRoute element={<EditUserTask />} requiredRoles={["ADMIN", "PRIVILEGED_USER"]} />}
         />
+
         <Route
           path="/viewusertask/:id"
           element={<ProtectedRoute element={<ViewUserTask />} requiredRoles={["ADMIN", "PRIVILEGED_USER"]} />}
@@ -134,6 +137,7 @@ function App() {
           path="/addtask"
           element={<ProtectedRoute element={<AddTask />} requiredRoles={["ADMIN"]} />}
         />
+
         {/* Public routes */}
         <Route path="/viewuser/:id" element={<ViewUser />} />
         <Route path="/viewtask/:id" element={<ViewTask />} />
