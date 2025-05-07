@@ -62,7 +62,7 @@ export default function ViewUserTask() {
                 { /* Task Details */}
                 <div className="mb-5 p-3 rounded-4 border" style={{ borderColor: "#6a11cb", backgroundColor: "#f2f3f5" }}>
                     <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">
-                        Task Assignment Details (ID: {id})
+                        Task Assignment Details
                     </h2>
                     <div className="card shadow-lg border-0 rounded-4">
                         <div className="card-body">
