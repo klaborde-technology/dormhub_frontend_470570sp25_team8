@@ -21,29 +21,25 @@ function Register({ registrationType = "guest" }) {
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
-    const [role] = useState(defaultRole); // Fixed role; no setter needed
+    const [role] = useState(defaultRole);
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Toggle password visibility
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
 
-    // Handle registration form submission
     const handleRegister = async (e) => {
         e.preventDefault();
         setMessage("");
         setLoading(true);
 
         try {
-            // Call your AuthService.register function with the fixed role
             const response = await AuthService.register(name, username, email, role, password);
 
             if (response) {
                 setMessage("✅ Registration successful! Redirecting...");
                 if (registrationType === "guest") {
-                    // After guest registration (creating an admin account), redirect to login
                     setTimeout(() => navigate("/login"), 1500);
                 } else {
                     setTimeout(() => navigate("/admintasks"), 1500);

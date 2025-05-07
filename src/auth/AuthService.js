@@ -1,13 +1,13 @@
 import axios from "axios";
 import { API_BASE_URL } from '../api';
 
-const API_URL = `${ API_BASE_URL }/auth`; // Backend auth API
+const API_URL = `${API_BASE_URL}/auth`;
 
 const AuthService = {
     // ✅ Register a new user
     register: async (name, username, email, role, password) => {
         try {
-            const response = await axios.post(`${ API_BASE_URL }/auth/register`, { name, username, email, role, password });
+            const response = await axios.post(`${API_BASE_URL}/auth/register`, { name, username, email, role, password });
             return response.data;
         } catch (error) {
             console.error("Registration error:", error.response?.data?.message || error.response?.data || error.message);
@@ -26,11 +26,11 @@ const AuthService = {
 
     // ✅ Logout with confirmation & redirect
     logout: () => {
-        const confirmLogout = window.confirm("Are you sure you want to log out?"); // ✅ Confirm before logging out
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
         if (!confirmLogout) return;
 
         localStorage.removeItem("token");
-        window.location.href = "/logout-success"; // ✅ Redirect to logout confirmation page
+        window.location.href = "/logout-success";
     },
 
     // ✅ Check if a token exists and is valid
@@ -39,7 +39,7 @@ const AuthService = {
         if (!token || token.split(".").length !== 3) return false;
 
         try {
-            const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+            const payload = JSON.parse(atob(token.split(".")[1]));
             const expiryTime = payload.exp * 1000;
             if (Date.now() >= expiryTime) {
                 AuthService.logout();
@@ -75,7 +75,7 @@ const AuthService = {
         try {
             const payload = JSON.parse(atob(token.split(".")[1]));
             console.log("Decoded JWT payload:", payload);
-            return payload.id || null; // Adjust based on your token structure
+            return payload.id || null;
         } catch (error) {
             console.error("Error decoding token:", error);
             return null;
@@ -105,8 +105,8 @@ const AuthService = {
         try {
             const payload = JSON.parse(atob(token.split(".")[1]));
             return {
-                email: payload.sub, // or `payload.email` depending on your backend
-                username: payload.username || payload.sub, // adjust based on your token
+                email: payload.sub,
+                username: payload.username || payload.sub,
             };
         } catch (error) {
             console.error("Error decoding token:", error);
@@ -121,7 +121,7 @@ const AuthService = {
 
         try {
             const payload = JSON.parse(atob(token.split(".")[1]));
-            return payload.sub || payload.email || null; // Adjust if your token uses a different field
+            return payload.sub || payload.email || null;
         } catch (error) {
             console.error("Error decoding token:", error);
             return null;

@@ -25,54 +25,54 @@ export default function Home() {
   const [targetTable, setTargetTable] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
- 
+
   const startTour = () => {
     const intro = introJs();
 
     // Set up the steps and keep going to Step 6
     intro.setOptions({
       steps: [
-      {
-        element: '.btn-info',
-        intro: 'Click to move completed tasks to the Completed section.',
-        position: 'left',
-      },
-      {
-        element: '#studentDropdown',
-        intro: 'Use this dropdown to select a student. The tasks will be filtered based on the selected student.',
-        position: 'bottom',
-      },
-      {
-        element: '#taskDropdown',
-        intro: 'Use this dropdown to select a task. The students tasks will be filtered based on the selected task.',
-        position: 'bottom',
-      },
-      {
-        element: isMobile ? '.card-body strong' : '.table th',
-        intro: isMobile
-        ? 'These are the task cards. Each card gives important details about a student and their task.'
-        : 'These are the column headers. Each column gives important details about a student and their task.',
-        position: 'bottom',
-      },
-      {
-        element: isMobile ? '.text-warning' : '.hide-column-name',
-        intro: isMobile 
-        ? 'IMPORTANT**: This icon shows the task status. Orange circle (🟠) means "In-Progress" and green checkmark circle (✅) means "Completed".'
-        : 'IMPORTANT**: This column shows the task status. Red (🔴) means "In-Progress" and green (🟢) means "Completed".',
-        position: 'bottom',
-      },
-      {
-        element: isMobile ? '.card .btn-primary' : '.view-button',
-        intro: 'Click to view the details of the selected task.',
-        position: 'left',
-      },
-      {
-        element: isMobile ? '.card .btn-outline-danger' : '.delete-button',
-        intro: isMobile
-        ? 'Guess what this button does? It deletes this card. Refresh the page to undo any changes you have made.'
-        : 'Guess what this button does? It deletes this row. Refresh the page to undo any changes you have made.',
-        position: 'left',
-      },
+        {
+          element: '.btn-info',
+          intro: 'Click to move completed tasks to the Completed section.',
+          position: 'left',
+        },
+        {
+          element: '#studentDropdown',
+          intro: 'Use this dropdown to select a student. The tasks will be filtered based on the selected student.',
+          position: 'bottom',
+        },
+        {
+          element: '#taskDropdown',
+          intro: 'Use this dropdown to select a task. The students tasks will be filtered based on the selected task.',
+          position: 'bottom',
+        },
+        {
+          element: isMobile ? '.card-body strong' : '.table th',
+          intro: isMobile
+            ? 'These are the task cards. Each card gives important details about a student and their task.'
+            : 'These are the column headers. Each column gives important details about a student and their task.',
+          position: 'bottom',
+        },
+        {
+          element: isMobile ? '.text-warning' : '.hide-column-name',
+          intro: isMobile
+            ? 'IMPORTANT**: This icon shows the task status. Orange circle (🟠) means "In-Progress" and green checkmark circle (✅) means "Completed".'
+            : 'IMPORTANT**: This column shows the task status. Red (🔴) means "In-Progress" and green (🟢) means "Completed".',
+          position: 'bottom',
+        },
+        {
+          element: isMobile ? '.card .btn-primary' : '.view-button',
+          intro: 'Click to view the details of the selected task.',
+          position: 'left',
+        },
+        {
+          element: isMobile ? '.card .btn-outline-danger' : '.delete-button',
+          intro: isMobile
+            ? 'Guess what this button does? It deletes this card. Refresh the page to undo any changes you have made.'
+            : 'Guess what this button does? It deletes this row. Refresh the page to undo any changes you have made.',
+          position: 'left',
+        },
       ],
       showStepNumbers: true,
       scrollToElement: true,
@@ -142,13 +142,13 @@ export default function Home() {
 
 
 
-                       
-                       
+
+
   return (
     <div
       className="container-fluid py-5 px-3"
       style={{
-        background: "linear-gradient(to right, #6a11cb, #2575fc)", // Sleek gradient background
+        background: "linear-gradient(to right, #6a11cb, #2575fc)",
         minHeight: "100vh",
         marginTop: "60px",
         paddingTop: "20px",
@@ -193,7 +193,7 @@ export default function Home() {
                 document
                   .querySelector(".btn-info")
                   .scrollIntoView({ behavior: "smooth", block: "center" });
-              }, 300); // Adding a slight delay to ensure the tour starts before scrolling
+              }, 300);
             }}
           >
             Get Started
@@ -251,7 +251,7 @@ export default function Home() {
         <button
           className="btn btn-info"
           style={{
-            backgroundColor: "#2575fc", // Gradient color
+            backgroundColor: "#2575fc",
             color: "white",
             borderRadius: "5px",
             padding: "10px 20px",
@@ -262,74 +262,74 @@ export default function Home() {
           }}
           onMouseOver={(e) =>
             (e.currentTarget.style.backgroundColor = "#6a11cb")
-          } // Change color on hover
+          }
           onMouseOut={(e) => {
             e.currentTarget.style.backgroundColor = "#2575fc";
-          }} // Revert color on mouse out
+          }}
           onClick={moveToTargetTable}
-                data-intro="Click to move completed tasks to the Completed section."
-                data-step="1"
-                data-position="left"
-              >
-                Move Completed Tasks
-              </button>
-              </div>
+          data-intro="Click to move completed tasks to the Completed section."
+          data-step="1"
+          data-position="left"
+        >
+          Move Completed Tasks
+        </button>
+      </div>
 
-              <div
-              className="dropdown-section mb-4 d-flex flex-column flex-md-row justify-content-center align-items-center"
-              style={{ gap: isMobile ? "20px" : "200px" }}
-              >
-              <div style={{ flex: 1, maxWidth: isMobile ? "100%" : "300px", width: "100%" }}>
-                <label htmlFor="studentDropdown" style={{ color: "white" }}>
-                Select Student:
-                </label>
-                <select
-                id="studentDropdown"
-                className="form-select"
-                value={selectedUser}
-                onChange={handleUserChange}
-                data-intro="Use this dropdown to select a student. The tasks will be filtered based on the selected student."
-                data-step="2"
-                data-position="bottom"
-                >
-                <option value="">-- Choose a Student --</option>
-                {Array.from(
-                  new Map(allUsers.map((u) => [u.username, u])).values()
-                ).map((u) => (
-                  <option key={u.username} value={u.username}>
-                  {u.username}
-                  </option>
-                ))}
-                </select>
-              </div>
+      <div
+        className="dropdown-section mb-4 d-flex flex-column flex-md-row justify-content-center align-items-center"
+        style={{ gap: isMobile ? "20px" : "200px" }}
+      >
+        <div style={{ flex: 1, maxWidth: isMobile ? "100%" : "300px", width: "100%" }}>
+          <label htmlFor="studentDropdown" style={{ color: "white" }}>
+            Select Student:
+          </label>
+          <select
+            id="studentDropdown"
+            className="form-select"
+            value={selectedUser}
+            onChange={handleUserChange}
+            data-intro="Use this dropdown to select a student. The tasks will be filtered based on the selected student."
+            data-step="2"
+            data-position="bottom"
+          >
+            <option value="">-- Choose a Student --</option>
+            {Array.from(
+              new Map(allUsers.map((u) => [u.username, u])).values()
+            ).map((u) => (
+              <option key={u.username} value={u.username}>
+                {u.username}
+              </option>
+            ))}
+          </select>
+        </div>
 
-              <div style={{ flex: 1, maxWidth: isMobile ? "100%" : "300px", width: "100%" }}>
-                <label htmlFor="taskDropdown" style={{ color: "white" }}>
-                Select Task:
-                </label>
-                <select
-                id="taskDropdown"
-                className="form-select"
-                value={selectedTask}
-                onChange={handleTaskChange}
-                data-intro="Use this dropdown to select a task. The students tasks will be filtered based on the selected task."
-                data-step="3"
-                data-position="bottom"
-                >
-                <option value="">-- Choose a Task --</option>
-                {allUsers
-                  .filter((user) => user.username === selectedUser)
-                  .flatMap((user) => user.tasks)
-                  .map((task, index) => (
-                  <option key={index} value={task}>
-                    {task}
-                  </option>
-                  ))}
-                </select>
-              </div>
-              </div>
+        <div style={{ flex: 1, maxWidth: isMobile ? "100%" : "300px", width: "100%" }}>
+          <label htmlFor="taskDropdown" style={{ color: "white" }}>
+            Select Task:
+          </label>
+          <select
+            id="taskDropdown"
+            className="form-select"
+            value={selectedTask}
+            onChange={handleTaskChange}
+            data-intro="Use this dropdown to select a task. The students tasks will be filtered based on the selected task."
+            data-step="3"
+            data-position="bottom"
+          >
+            <option value="">-- Choose a Task --</option>
+            {allUsers
+              .filter((user) => user.username === selectedUser)
+              .flatMap((user) => user.tasks)
+              .map((task, index) => (
+                <option key={index} value={task}>
+                  {task}
+                </option>
+              ))}
+          </select>
+        </div>
+      </div>
 
-              {/* Task Tables / Cards */}
+      {/* Task Tables / Cards */}
       {isMobile ? (
         <div className="container bg-white bg-opacity-75 rounded-4 shadow-lg p-4">
           <h2 className="text-center fw-semibold fs-4 border-bottom pb-2 mb-4 text-dark-emphasis">

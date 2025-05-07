@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import AuthService from "../auth/AuthService"; // ✅ Import AuthService
+import AuthService from "../auth/AuthService";
 import { API_BASE_URL } from '../api';
 
 export default function AddUserTask() {
@@ -9,17 +9,16 @@ export default function AddUserTask() {
 
     const [userTask, setUserTask] = useState({
         deadline: "",
-        status: "In-progress", // Default status for dropdown
+        status: "In-progress",
         userId: "",
         taskId: "",
     });
 
     const { deadline, status, userId, taskId } = userTask;
 
-    const [users, setUsers] = useState([]); // To hold predefined users
-    const [tasks, setTasks] = useState([]); // To hold predefined tasks
+    const [users, setUsers] = useState([]);
+    const [tasks, setTasks] = useState([]);
 
-    // Fetch predefined users and tasks on component mount
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -47,18 +46,17 @@ export default function AddUserTask() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Map status to the boolean `false` for "In-progress"
             const taskData = {
                 deadline,
-                status: false, // Default to "In-progress"
-                user: { id: userId }, // Send user ID
-                task: { id: taskId }, // Send task ID
+                status: false,
+                user: { id: userId },
+                task: { id: taskId },
             };
 
             await axios.post(`${API_BASE_URL}/usertask`, taskData, {
-                headers: AuthService.getAuthHeader(), // Include JWT token
+                headers: AuthService.getAuthHeader(),
             });
-            navigate("/admintasks"); // Redirect to user-tasks list
+            navigate("/admintasks");
         } catch (error) {
             console.error("Error adding UserTask:", error);
         }
@@ -150,7 +148,7 @@ export default function AddUserTask() {
                             name="status"
                             value={status}
                             onChange={onInputChange}
-                            disabled // Only one option ("In-progress")
+                            disabled
                         >
                             <option value="In-progress">In-progress</option>
                         </select>

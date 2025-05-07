@@ -6,13 +6,12 @@ export default function LogoutSuccess() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            navigate("/"); // Redirects to home page after 4.4 seconds
+            navigate("/");
         }, 4400);
 
-        return () => clearTimeout(timer); // Cleanup function
+        return () => clearTimeout(timer);
     }, [navigate]);
 
-        // Function to split the text into individual letters
     const splitText = (text) => {
         return text.split("").map((letter, index) => (
             <span key={index} style={{ animationDelay: `${index * 0.1}s` }}>
